@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:fillViewport="true">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.components.activities.splash.SplashActivity">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:layout_marginHorizontal="@dimen/_30sdp"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvLoginFacebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/verification_code"
+                    android:fontFamily="@font/gotham_bold"
+                    android:textSize="@dimen/txtSizeXXLarge"
+                    android:foreground="@drawable/ripple_rec"
+                    android:textColor="@color/color_1786B3"
+                    />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Please enter your 4-digit code"
+                    android:fontFamily="@font/gotham_book"
+                    android:textSize="@dimen/txtSizeSmall"
+                    android:foreground="@drawable/ripple_rec"
+                    android:textColor="@color/color_676767"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="sent to"
+                        android:fontFamily="@font/gotham_book"
+                        android:textSize="@dimen/txtSizeSmall"
+                        android:foreground="@drawable/ripple_rec"
+                        android:textColor="@color/color_676767"
+                        />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvMobile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" +91-9887347658"
+                        android:fontFamily="@font/gotham_bold"
+                        android:textSize="@dimen/txtSizeNormal"
+                        android:foreground="@drawable/ripple_rec"
+                        android:textColor="@color/color_1786B3"
+                        />
+                </LinearLayout>
+
+                <in.aabhasjindal.otptextview.OtpTextView
+                    android:id="@+id/otp_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_1786B3"
+                    app:bar_active_color="@color/color_56B6CC"
+                    app:bar_enabled="true"
+                    app:bar_error_color="@color/red"
+                    app:bar_height="@dimen/_1sdp"
+                    app:bar_inactive_color="@color/color_939393"
+                    app:bar_margin_bottom="0dp"
+                    app:bar_margin_left="2dp"
+                    app:bar_margin_right="2dp"
+                    app:bar_success_color="@color/color_56B6CC"
+                    app:box_margin="0dp"
+                    app:height="@dimen/_30sdp"
+                    app:hide_otp="false"
+                    android:layout_marginVertical="@dimen/_30sdp"
+                    app:length="4"
+                    app:otp=""
+                    app:otp_text_size="@dimen/txtSizeXXLarge"
+                    app:width="@dimen/_40sdp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnVerify"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btnSmallSize"
+                    android:text="@string/verify"
+                    android:textAllCaps="false"
+                    android:foreground="@drawable/ripple_rec"
+                    android:fontFamily="@font/gotham_book"
+                    android:background="@drawable/bg_corner_rounded_btn"
+                    android:textColor="@color/colorWhite"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvResendOtp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/re_send_code"
+                    android:fontFamily="@font/gotham_bold"
+                    android:textSize="@dimen/txtSizeSmall"
+                    android:foreground="@drawable/ripple_rec"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:padding="@dimen/_5sdp"
+                    android:textColor="@color/color_676767"
+                    />
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

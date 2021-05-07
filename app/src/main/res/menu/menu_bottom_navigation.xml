@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuProfile"
+        android:icon="@drawable/bottom_profile"
+        android:title="Profile" />
+
+    <item
+        android:id="@+id/menuHome"
+        android:icon="@drawable/bottom_bloon"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/menuMessage"
+        android:icon="@drawable/bottom_massage"
+        android:title="Message" />
+
+</menu>

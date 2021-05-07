@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_2sdp">
+
+        <RelativeLayout
+            android:id="@+id/rlHeader"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:paddingHorizontal="@dimen/_10sdp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBack"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:foreground="@drawable/ripple_round"
+                android:onClick="onClick"
+                android:padding="@dimen/_3sdp"
+                android:tint="@color/color_1786B3"
+                app:srcCompat="@drawable/ic_back_arrow" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="@dimen/_50sdp"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:fontFamily="@font/poppins_regular"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:text="Categories"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/txtSizeNormal" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivCart"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:foreground="@drawable/ripple_round"
+                android:onClick="onClick"
+                android:padding="@dimen/_5sdp"
+                android:tint="@color/colorBlack"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/ic_camera" />
+
+        </RelativeLayout>
+
+        <View
+            style="@style/view_line"
+            android:layout_below="@id/rlHeader" />
+    </RelativeLayout>
+</layout>

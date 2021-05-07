@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true"
+        app:cardBackgroundColor="#fff"
+        app:cardCornerRadius="25dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/rlmain"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+                <com.balloon.utils.ShapesImage
+                    android:orientation="vertical"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    android:id="@+id/siListImage"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/girl"
+                    app:shape="guitar_pick">
+
+
+                </com.balloon.utils.ShapesImage>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tvmessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:textAlignment="center"
+                android:text="Name:Nisha Goyal"
+                android:textColor="#000"
+                android:textSize="20dp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="50dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_marginEnd="30dp"
+                    android:id="@+id/btn_aprove"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_yes"
+                   />
+
+                <ImageView
+                    android:layout_marginStart="30dp"
+                    android:id="@+id/btn_remove"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_no"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
+</layout>

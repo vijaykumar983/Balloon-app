@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/_10sdp"
+    android:paddingRight="@dimen/_15sdp"
+    android:paddingLeft="@dimen/_60sdp"
+    android:clipToPadding="false">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/message_body"
+        android:background="@drawable/my_message"
+        android:textColor="@color/colorWhite"
+        android:fontFamily="@font/gotham_book"
+        android:padding="@dimen/_10sdp"
+        android:elevation="@dimen/_2sdp"
+        android:textSize="@dimen/txtSizeNormal"
+        android:layout_alignParentRight="true"
+        android:text="Placeholder message"
+        />
+
+</RelativeLayout>

@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">Balloon</string>
+
+    <!--All Validations-->
+    <string name="enter_mobile">Please enter mobile</string>
+    <string name="enter_otp">Please enter OTP</string>
+    <string name="enter_valid_mobile_number">Please enter a valid mobile number</string>
+    <string name="enter_valid_otp">Please enter valid OTP</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="enter_password">Please enter password</string>
+    <string name="enter_cpassword">Please enter confirm password</string>
+    <string name="minimum_6_characters">Please enter at least 6 characters</string>
+    <string name="password_not_match">Password and confirm password do not match</string>
+    <string name="enter_address">Please enter address</string>
+    <string name="enter_bio">Please enter bio</string>
+    <string name="minimum_3_char_long_address">Please enter address at least 3 characters long</string>
+    <string name="minimum_3_char_long_bio">Please enter bio at least 3 characters long</string>
+    <string name="minimum_3_char_long_name">Please enter name at least 3 characters long</string>
+    <string name="minimum_3_char_desciption">Please enter description at least 3 characters long</string>
+    <string name="enter_name">Please enter name</string>
+    <string name="enter_email">Please enter email id</string>
+    <string name="enter_valid_email_id">Please enter a valid email id</string>
+    <string name="please_select_image">Please select image</string>
+    <string name="enter_description">Please enter description</string>
+
+
+    <string name="submit">Submit</string>
+    <string name="permission_required">Permissions Required</string>
+    <string name="you_have_forcefully">You have forcefully denied some of the required permissions</string>
+    <string name="for_this_action">for this action. Please open settings, go to permissions and allow them.</string>
+    <string name="login_with_phone">Login with Phone</string>
+    <string name="login_with_facebook">Login with Facebook</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
+    <string name="verification_code">Verification Code</string>
+    <string name="verify">Verify</string>
+    <string name="re_send_code">Re-send code</string>
+    <string name="send_a">Send a</string>
+    <string name="balloon">Balloon</string>
+    <string name="click">click</string>
+    <string name="what_do_you_want_to_do">What do you want to do?</string>
+    <string name="type_something">Type something</string>
+
+
+
+    <string name="level_label">Level:</string>
+    <string name="score_label">Score:</string>
+    <string name="max_number">99</string>
+    <string name="play_game">Play game</string>
+
+    <string name="popping_pin">Popping Pin</string>
+    <string name="no_internet">No internet connection</string>
+    <string name="internet_issue">Internet Issue</string>
+    <string name="please_check_your_internet">Please check your internet connection, app is not working due to internet issue</string>
+    <string name="search">Search</string>
+
+    <string name="no_users_found">No users found!</string>
+
+</resources>

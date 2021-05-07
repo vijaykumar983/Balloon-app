@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <AbsoluteLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rowBalloonItem"
+        android:layout_width="match_parent"
+        android:layout_height="310dp"
+        android:layout_margin="5dp"
+        tools:ignore="Deprecated">
+
+        <RelativeLayout
+            android:id="@+id/rlmain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <pl.droidsonroids.gif.GifImageView
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/new_gif"
+                android:visibility="visible" />
+
+            <RelativeLayout
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+
+                <com.balloon.utils.ShapesImage
+                    android:id="@+id/siListImage"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="vertical"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/logo"
+                    app:shape="guitar_pick" />
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+    </AbsoluteLayout>
+
+</layout>

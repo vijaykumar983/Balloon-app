@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="txtSizeXXSmall">@dimen/_5sdp</dimen>
+    <dimen name="txtSizeXSmall">@dimen/_7sdp</dimen>
+    <dimen name="txtSizeSmall">@dimen/_9sdp</dimen>
+    <dimen name="txtSizeNormal">@dimen/_11sdp</dimen>
+    <dimen name="txtSizeLarge">@dimen/_13sdp</dimen>
+    <dimen name="txtSizeXLarge">@dimen/_15sdp</dimen>
+    <dimen name="txtSizeXXLarge">@dimen/_17sdp</dimen>
+    <dimen name="txtSizeXXXLarge">@dimen/_19sdp</dimen>
+    <dimen name="txtSizeTitle">@dimen/_14sdp</dimen>
+    <dimen name="txtSizeButton">@dimen/_14sdp</dimen>
+
+    <dimen name="btnXSmallSize">@dimen/_25sdp</dimen>
+    <dimen name="btnSmallSize">@dimen/_30sdp</dimen>
+    <dimen name="btnNormalSize">@dimen/_35sdp</dimen>
+    <dimen name="editNormalSize">@dimen/_35sdp</dimen>
+
+    <dimen name="logo_width">@dimen/_180sdp</dimen>
+    <dimen name="logo_height">@dimen/_90sdp</dimen>
+
+
+    <dimen name="status_text_size">20sp</dimen>
+    <dimen name="pin_size">40dp</dimen>
+
+</resources>

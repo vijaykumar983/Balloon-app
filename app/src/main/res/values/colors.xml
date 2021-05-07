@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorTransparent">#00000000</color>
+    <color name="color_view">#F2F2F2</color>
+    <color name="color_9B9B9B">#9B9B9B</color>
+    <color name="color_B7B7B7">#B7B7B7</color>
+    <color name="color_FF653B">#FF653B</color>
+    <color name="color_F8F8F8">#F8F8F8</color>
+    <color name="color_20C715">#20C715</color>
+    <color name="color_262D64">#262D64</color>
+    <color name="color_8C8C8C">#8C8C8C</color>
+
+
+    <color name="color_1786B3">#1786B3</color>
+    <color name="color_939393">#939393</color>
+    <color name="color_56B6CC">#56B6CC</color>
+    <color name="color_676767">#676767</color>
+    <color name="color_F3F3F3">#F3F3F3</color>
+
+
+    <color name="lightGrey">#DDDDDD</color>
+    <color name="pinColor">#000000</color>
+
+    <color name="colorAccent">#D91065</color>
+
+</resources>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/rowChatItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp">
+
+        <RelativeLayout
+            android:id="@+id/rlMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/ivUserProfile"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginStart="0dp"
+                android:visibility="gone"
+                android:src="@drawable/profile_pic" />
+
+            <RelativeLayout
+                android:id="@+id/rlTextMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_toEndOf="@id/ivUserProfile"
+                android:background="@drawable/my_message"
+                android:padding="@dimen/_10sdp">
+
+                <TextView
+                    android:id="@+id/tvMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_regular"
+                    android:text="TextViewsdlfjajslf"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/txtSizeNormal" />
+
+                <!-- <TextView
+                     android:id="@+id/tvTime"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:textColor="@color/color_B7B7B7"
+                     android:layout_toEndOf="@id/tvMessage"
+                     android:textSize="@dimen/txtSizeXSmall"
+                   android:layout_alignBottom="@id/tvMessage"
+                     android:layout_marginLeft="@dimen/_5sdp"
+                     android:text="00:00" />-->
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
+</layout>
