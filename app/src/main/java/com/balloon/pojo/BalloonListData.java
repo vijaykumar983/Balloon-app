@@ -2,7 +2,6 @@ package com.balloon.pojo;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class BalloonListData{
@@ -40,7 +39,6 @@ public class BalloonListData{
 		return statusCode;
 	}
 
-
 	public static class Data{
 
 		@SerializedName("Bubbles")
@@ -65,8 +63,16 @@ public class BalloonListData{
 			return userId;
 		}
 
+		public static class BubblesItem{
 
-		public static class BubblesItem implements Serializable {
+			@SerializedName("image")
+			private String image;
+
+			@SerializedName("categoryimage")
+			private String categoryimage;
+
+			@SerializedName("bubbleId")
+			private String bubbleId;
 
 			@SerializedName("id")
 			private String id;
@@ -77,15 +83,28 @@ public class BalloonListData{
 			@SerializedName("Name")
 			private String name;
 
-			@SerializedName("image")
-			private String image;
-
-			public BubblesItem(String id,String title,String name,String image)
-			{
-				this.id = id;
-				this.title = title;
-				this.name = name;
+			public void setImage(String image){
 				this.image = image;
+			}
+
+			public String getImage(){
+				return image;
+			}
+
+			public void setCategoryimage(String categoryimage){
+				this.categoryimage = categoryimage;
+			}
+
+			public String getCategoryimage(){
+				return categoryimage;
+			}
+
+			public void setBubbleId(String bubbleId){
+				this.bubbleId = bubbleId;
+			}
+
+			public String getBubbleId(){
+				return bubbleId;
 			}
 
 			public void setId(String id){
@@ -111,16 +130,6 @@ public class BalloonListData{
 			public String getName(){
 				return name;
 			}
-
-			public void setImage(String image){
-				this.image = image;
-			}
-
-			public String getImage(){
-				return image;
-			}
 		}
-
 	}
-
 }

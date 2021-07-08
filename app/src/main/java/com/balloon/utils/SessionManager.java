@@ -12,11 +12,13 @@ import static android.content.Context.MODE_PRIVATE;
 public class SessionManager extends BaseObservable {
     private final String IS_LOGIN = "isLoggedIn";
     private final String AUTH_TOKEN = "auth_token";
+    private final String SELECT_BALLOON = "select_balloon";
+    private final String SOCIAL = "social";
 
     private final String USER_ID = "user_id";
     private final String FULL_NAME = "full_name";
     private final String PHONE = "phone";
-    private final String DEVICE_ID = "device_id";
+    private final String DEVICE_TOKEN = "device_token";
     private final String ADDRESS = "address";
     private final String BIO = "bio";
     private final String PROFILE_IMAGE = "profile_image";
@@ -50,6 +52,24 @@ public class SessionManager extends BaseObservable {
 
     public void setLogin() {
         editor.putBoolean(IS_LOGIN, true);
+        editor.commit();
+    }
+
+    public boolean getSelectBalloon() {
+        return shared.getBoolean(SELECT_BALLOON, false);
+    }
+
+    public void setSelectBalloon(boolean selectBalloon) {
+        editor.putBoolean(SELECT_BALLOON, selectBalloon);
+        editor.commit();
+    }
+
+    public boolean getSocial() {
+        return shared.getBoolean(SOCIAL, false);
+    }
+
+    public void setSocial(boolean social) {
+        editor.putBoolean(SOCIAL, social);
         editor.commit();
     }
 
@@ -152,6 +172,15 @@ public class SessionManager extends BaseObservable {
         editor.commit();
     }
 
+    public String getDEVICE_TOKEN() {
+        return shared.getString(DEVICE_TOKEN, "");
+    }
+
+    public void setDEVICE_TOKEN(String deviceToken) {
+        editor.putString(DEVICE_TOKEN, deviceToken);
+        editor.commit();
+    }
+
 
     /*@Bindable("data")
     public UserData.Data getUserData() {
@@ -213,7 +242,7 @@ public class SessionManager extends BaseObservable {
         editor.putString(FULL_NAME, "");
         editor.putString(PHONE, "");
         editor.putString(BIO, "");
-        editor.putString(DEVICE_ID, "");
+        editor.putString(DEVICE_TOKEN, "");
         editor.putString(FIREBASE_ID, "");
         editor.putString(ADDRESS, "");
         editor.putString(PROFILE_IMAGE, "");
@@ -223,6 +252,8 @@ public class SessionManager extends BaseObservable {
         editor.putString(LONGITUDE, "");
         editor.putString(AUTH_TOKEN, "");
         editor.putBoolean(IS_LOGIN, false);
+        editor.putBoolean(SELECT_BALLOON, false);
+        editor.putBoolean(SOCIAL, false);
         editor.commit();
     }
 }

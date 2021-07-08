@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:clipToPadding="false"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rlHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/_15sdp"
+            android:paddingVertical="@dimen/_10sdp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBack"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_alignParentLeft="true"
+                android:foreground="@drawable/ripple_round"
+                android:padding="@dimen/_3sdp"
+                android:src="@drawable/ic_back_arrow"
+                android:tint="@color/color_1786B3" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSettings"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/bg_rounded_white_15dp"
+                android:fontFamily="@font/gotham_book"
+                android:foreground="@drawable/ripple_round"
+                android:text="Settings"
+                android:textAllCaps="false"
+                android:textColor="@color/color_1786B3"
+                android:visibility="invisible" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="@dimen/_20sdp">
+
+
+            <!--<com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/ivProfile"
+                android:layout_width="@dimen/_130sdp"
+                android:layout_height="@dimen/_130sdp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/logo_balloon"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="0.5dp" />-->
+
+            <com.balloon.utils.ShapesImage
+                android:id="@+id/ivProfile"
+                android:layout_width="@dimen/_170sdp"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/user"
+                app:shape="guitar_pick" />
+
+            <RelativeLayout
+                android:id="@+id/relativeBalloon4"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_120sdp"
+                android:layout_toLeftOf="@id/progressViewAir"
+                android:layout_marginTop="@dimen/_50sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:visibility="gone"
+                >
+                <RelativeLayout
+                    android:id="@+id/rlBalloon4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivBalloon4"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:scaleType="fitXY"
+                        app:tint="@color/color_1786B3"
+                        android:src="@drawable/bottom_bloon" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvAirPercentage4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0%"
+                        android:textAllCaps="true"
+                        android:textSize="@dimen/txtSizeXSmall"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/gotham_book"
+                        android:textColor="@color/colorWhite"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/relativeBalloon3"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_90sdp"
+                android:layout_toLeftOf="@id/progressViewAir"
+                android:layout_marginTop="@dimen/_80sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:visibility="gone"
+                >
+                <RelativeLayout
+                    android:id="@+id/rlBalloon3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivBalloon3"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:scaleType="fitXY"
+                        app:tint="@color/color_1786B3"
+                        android:src="@drawable/bottom_bloon" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvAirPercentage3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0%"
+                        android:textAllCaps="true"
+                        android:textSize="@dimen/txtSizeXSmall"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/gotham_book"
+                        android:textColor="@color/colorWhite"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/relativeBalloon2"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_toLeftOf="@id/progressViewAir"
+                android:layout_marginTop="@dimen/_110sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:visibility="gone"
+                >
+                <RelativeLayout
+                    android:id="@+id/rlBalloon2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivBalloon2"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:scaleType="fitXY"
+                        app:tint="@color/color_1786B3"
+                        android:src="@drawable/bottom_bloon" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvAirPercentage2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0%"
+                        android:textAllCaps="true"
+                        android:textSize="@dimen/txtSizeXSmall"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/gotham_book"
+                        android:textColor="@color/colorWhite"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/relativeBalloon1"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_toLeftOf="@id/progressViewAir"
+                android:layout_marginTop="@dimen/_140sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:visibility="gone"
+                >
+                <RelativeLayout
+                    android:id="@+id/rlBalloon1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivBalloon1"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:scaleType="fitXY"
+                        app:tint="@color/color_1786B3"
+                        android:src="@drawable/bottom_bloon" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvAirPercentage1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0%"
+                        android:textAllCaps="true"
+                        android:textSize="@dimen/txtSizeXSmall"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/gotham_book"
+                        android:textColor="@color/colorWhite"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <com.skydoves.progressview.ProgressView
+                android:id="@+id/progressViewAir"
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_120sdp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/_50sdp"
+                app:progressView_colorBackground="@color/color_1786B3"
+                app:progressView_colorGradientEnd="@color/colorWhite"
+                app:progressView_colorGradientStart="@color/colorWhite"
+                app:progressView_colorProgress="@color/color_1786B3"
+                app:progressView_highlightAlpha="0.8"
+                app:progressView_highlightColor="@color/color_1786B3"
+                app:progressView_highlightWidth="@dimen/_1sdp"
+                app:progressView_labelColorInner="@color/white"
+                app:progressView_labelColorOuter="@color/white"
+                app:progressView_labelSize="@dimen/txtSizeSmall"
+                app:progressView_labelSpace="@dimen/_60sdp"
+                app:progressView_labelText=""
+                app:progressView_labelTypeface="normal"
+                app:progressView_orientation="vertical"
+                app:progressView_padding="@dimen/_1sdp"
+                app:progressView_progress="0"
+                app:progressView_radius="@dimen/_8sdp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:rotation="180"
+                    android:text="A\nI\nR"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/txtSizeSmall" />
+            </com.skydoves.progressview.ProgressView>
+
+            <!--<RelativeLayout
+                android:id="@+id/rlAirBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/_50sdp"
+                >
+
+             <View
+                 android:id="@+id/view1"
+                 android:layout_width="@dimen/_18sdp"
+                 android:layout_height="@dimen/_120sdp"
+                 android:background="@drawable/bg_corner_rounded_btn_8dp"
+                 />
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_60sdp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/_1sdp"
+                    android:background="@drawable/bg_rounded_corner_white_6sdp"
+                    android:layout_alignBottom="@id/view1"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtAIR"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AIR"
+                    android:textAllCaps="true"
+                    android:rotation="270"
+                    android:textSize="@dimen/txtSizeSmall"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/gotham_book"
+                    android:textColor="@color/color_1786B3"
+                    android:layout_alignBottom="@id/view2"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    />
+            </RelativeLayout>-->
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvFullName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ivProfile"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/gotham_medium"
+                android:foreground="@drawable/ripple_rec"
+                android:text=""
+                android:textColor="@color/color_939393"
+                android:textSize="@dimen/txtSizeXXLarge" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvFullName"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:fontFamily="@font/gotham_book"
+                android:foreground="@drawable/ripple_rec"
+                android:text="FullName@gmail.com"
+                android:textColor="@color/color_939393"
+                android:textSize="@dimen/txtSizeNormal"
+                android:visibility="invisible" />
+
+            <LinearLayout
+                android:id="@+id/llBioPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvEmail"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnPhoto"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_corner_rounded_btn_8dp"
+                    android:elevation="@dimen/_2sdp"
+                    android:fontFamily="@font/gotham_book"
+                    android:foreground="@drawable/ripple_round"
+                    android:text="Photos"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorWhite" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnMyBio"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_rounded_corner_white_8dp"
+                    android:elevation="@dimen/_2sdp"
+                    android:fontFamily="@font/gotham_book"
+                    android:foreground="@drawable/ripple_round"
+                    android:text="Bio"
+                    android:textAllCaps="true"
+                    android:textColor="@color/color_1786B3" />
+
+
+            </LinearLayout>
+
+            <!-- <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_below="@id/llBioPhoto"
+                 android:layout_marginVertical="@dimen/_30sdp"
+                 >
+
+             <androidx.appcompat.widget.AppCompatTextView
+                 android:id="@+id/tvBio"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="Lorem ipsum is a name for a common type of placeholder text. Also known as filler or dummy text, this is simply copy that serves to fill a space without actually saying anything meaningful. Its essentially nonsense text, but gives an idea of what real text will look like in the final product. "
+                 android:fontFamily="@font/gotham_book"
+                 android:textSize="@dimen/txtSizeNormal"
+                 android:gravity="center"
+                 android:visibility="visible"
+                 android:foreground="@drawable/ripple_rec"
+                 android:textColor="@color/color_939393"
+                 android:layout_centerHorizontal="true"
+                 />
+
+                 <androidx.recyclerview.widget.RecyclerView
+                     android:id="@+id/rvPhotos"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:clipToPadding="false"
+                     android:orientation="vertical"
+                     app:spanCount="3"
+                     android:visibility="gone"
+                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                     tools:listitem="@layout/row_photos" />
+
+             </RelativeLayout>-->
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/llBioPhoto"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/linearPhotos"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvPhotos"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:orientation="vertical"
+                            android:visibility="visible"
+                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                            app:spanCount="3"
+                            tools:listitem="@layout/row_photos" />
+
+                        <include
+                            android:id="@+id/layoutError1"
+                            layout="@layout/layout_error_show1" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/linearBio"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvBio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/gotham_book"
+                            android:lineSpacingExtra="@dimen/_5sdp"
+                            android:text=""
+                            android:textColor="@color/color_1786B3"
+                            android:textSize="@dimen/_14sdp"
+                            android:visibility="visible" />
+
+                        <include
+                            android:id="@+id/layoutError"
+                            layout="@layout/layout_error_show" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</layout>

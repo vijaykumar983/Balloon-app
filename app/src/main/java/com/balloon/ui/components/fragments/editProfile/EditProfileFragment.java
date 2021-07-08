@@ -4,10 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.text.InputFilter;
 import android.util.Base64;
@@ -30,20 +30,17 @@ import androidx.lifecycle.ViewModelProvider;
 import com.asksira.bsimagepicker.BSImagePicker;
 import com.balloon.R;
 import com.balloon.databinding.DialogSuccessfullyBinding;
-import com.balloon.databinding.FragmentChatBinding;
 import com.balloon.databinding.FragmentEditProfileBinding;
 import com.balloon.network.ApiResponse;
 import com.balloon.pojo.EditProfileData;
-import com.balloon.pojo.LoginData;
 import com.balloon.pojo.ProfileData;
 import com.balloon.ui.base.BaseFragment;
 import com.balloon.ui.components.activities.home.HomeActivity;
-import com.balloon.ui.components.activities.login.LoginActivity;
-import com.balloon.ui.components.activities.settings.SettingActivity;
-import com.balloon.ui.components.activities.verification.VerificationActivity;
 import com.balloon.utils.Constants;
 import com.balloon.utils.EmojiExcludeFilter;
+import com.balloon.utils.ImagePathUtility;
 import com.balloon.utils.ProgressDialog;
+import com.balloon.utils.SessionManager;
 import com.balloon.utils.Utility;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -101,7 +98,13 @@ public class EditProfileFragment extends BaseFragment implements BSImagePicker.O
         binding.tvTitle.setText("Edit Profile");
         binding.etName.setFilters(new InputFilter[]{new EmojiExcludeFilter()});
         binding.etLocation.setFilters(new InputFilter[]{new EmojiExcludeFilter()});
-
+        if (SessionManager.getInstance(mActivity).getSocial()) {
+            binding.etPhone.setEnabled(true);
+            binding.etPhone.setAlpha(1.0f);
+        } else {
+            binding.etPhone.setEnabled(false);
+            binding.etPhone.setAlpha(0.4f);
+        }
     }
 
 
@@ -115,7 +118,7 @@ public class EditProfileFragment extends BaseFragment implements BSImagePicker.O
         Log.e(TAG, "check selectImage - " + selectedImagePath);
 
         if (sessionManager.getFULL_NAME().isEmpty() || sessionManager.getPHONE().isEmpty() || sessionManager.getADDRESS().isEmpty()
-                || sessionManager.getPROFILE_IMAGE().isEmpty()) {
+                || sessionManager.getPROFILE_IMAGE().isEmpty() || sessionManager.getBIO().isEmpty()) {
             getProfileApi();
         } else {
             setProfileData();
@@ -130,7 +133,9 @@ public class EditProfileFragment extends BaseFragment implements BSImagePicker.O
         binding.etBio.setText(sessionManager.getBIO());
         if (selectedImagePath.isEmpty()) {
             if (sessionManager.getPROFILE_IMAGE() != null && !sessionManager.getPROFILE_IMAGE().isEmpty())
-            Utility.loadImage(binding.ivProfile, sessionManager.getPROFILE_IMAGE());
+            {
+                Utility.loadPicture(binding.ivProfile, sessionManager.getPROFILE_IMAGE());
+            }
         }
     }
 
@@ -159,7 +164,6 @@ public class EditProfileFragment extends BaseFragment implements BSImagePicker.O
         binding.ivBack.setOnClickListener(this);
         binding.btnSubmit.setOnClickListener(this);
         binding.tvEdit.setOnClickListener(this);
-        binding.btnSetting.setOnClickListener(this);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -179,14 +183,11 @@ public class EditProfileFragment extends BaseFragment implements BSImagePicker.O
                         .build();
                 pickerDialog.show(getChildFragmentManager(), "picker");
                 break;
-            case R.id.btnSetting:
-                SettingActivity.startActivity(mActivity,null,false);
-                break;
         }
     }
 
     private void getProfileApi() {
-        if (sessionManager.getUSER_ID() !=null && !sessionManager.getUSER_ID().isEmpty()) {
+        if (sessionManager.getUSER_ID() != null && !sessionManager.getUSER_ID().isEmpty()) {
 
             HashMap<String, String> reqData = new HashMap<>();
             reqData.put("userId", sessionManager.getUSER_ID());
@@ -215,7 +216,7 @@ public class EditProfileFragment extends BaseFragment implements BSImagePicker.O
                 Log.e(TAG, "Response - " + new Gson().toJson(result));
                 if (result.getData().getStatusCode() == Constants.Success) {
 
-                    if (result.getData().getData().getUserinfo() !=null) {
+                    if (result.getData().getData().getUserinfo() != null) {
                         sessionManager.setUSER_ID(result.getData().getData().getUserId());
                         sessionManager.setFULL_NAME(result.getData().getData().getUserinfo().getName());
                         sessionManager.setPROFILE_IMAGE(result.getData().getData().getUserinfo().getImage());
@@ -238,18 +239,20 @@ public class EditProfileFragment extends BaseFragment implements BSImagePicker.O
         String name = binding.etName.getText().toString().trim();
         String location = binding.etLocation.getText().toString().trim();
         String bio = binding.etBio.getText().toString().trim();
+        String phone = binding.etPhone.getText().toString().trim();
 
         if (uploadImg.equals("Upload Image")) {
             if (sessionManager.getPROFILE_IMAGE() != null && !sessionManager.getPROFILE_IMAGE().isEmpty())
-            uploadImg = sessionManager.getPROFILE_IMAGE();
+                uploadImg = sessionManager.getPROFILE_IMAGE();
         }
-        Log.e(TAG,"check - "+uploadImg);
+        Log.e(TAG, "check - " + uploadImg);
 
-        if (viewModel.isValidFormData(mActivity, uploadImg, name, location,bio)) {
+        if (viewModel.isValidFormData(mActivity, uploadImg, name, location, bio, phone)) {
 
             HashMap<String, String> reqData = new HashMap<>();
 
             reqData.put("userId", sessionManager.getUSER_ID());
+            reqData.put("mobileNo", phone);
             reqData.put("name", name);
             reqData.put("location", location);
             reqData.put("about", bio);
@@ -264,6 +267,7 @@ public class EditProfileFragment extends BaseFragment implements BSImagePicker.O
             MultipartBody.Part req_name = MultipartBody.Part.createFormData("name", name);
             MultipartBody.Part req_location = MultipartBody.Part.createFormData("location", location);
             MultipartBody.Part req_bio = MultipartBody.Part.createFormData("about", bio);
+            MultipartBody.Part req_phone = MultipartBody.Part.createFormData("mobileNo", phone);
             MultipartBody.Part profile_photo = null;
             if (selectedImagePath.isEmpty()) {
             } else {
@@ -273,7 +277,7 @@ public class EditProfileFragment extends BaseFragment implements BSImagePicker.O
             if (Utility.isOnline(mActivity)) {
                 Log.e(TAG, "Api parameters - " + reqData.toString());
                 Log.e(TAG, "profile - " + profile_photo);
-                viewModel.editProfile(req_userId,req_name, req_location, profile_photo,req_bio);
+                viewModel.editProfile(req_userId, req_name, req_location, profile_photo, req_bio, req_phone);
             } else {
                 showNoInternetDialog();
             }
@@ -300,7 +304,7 @@ public class EditProfileFragment extends BaseFragment implements BSImagePicker.O
                     sessionManager.setPROFILE_IMAGE(result.getData().getUserData().getProfileImage());
                     sessionManager.setPHONE(result.getData().getUserData().getPhone());
                     sessionManager.setADDRESS(result.getData().getUserData().getLocation());
-                   sessionManager.setBIO(result.getData().getUserData().getBio());
+                    sessionManager.setBIO(result.getData().getUserData().getBio());
                     setProfileData();
 
                     showSuccessfullyDialog();
@@ -324,7 +328,6 @@ public class EditProfileFragment extends BaseFragment implements BSImagePicker.O
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         dialog.setContentView(dialogBinding.getRoot());
         dialogBinding.btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -348,7 +351,6 @@ public class EditProfileFragment extends BaseFragment implements BSImagePicker.O
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         dialog.setContentView(dialogBinding.getRoot());
         dialogBinding.btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -374,7 +376,13 @@ public class EditProfileFragment extends BaseFragment implements BSImagePicker.O
 
     @Override
     public void onSingleImageSelected(Uri uri, String tag) {
-        selectedImagePath = uri.getPath();
+        /*selectedImagePath = Utility.getRealPathFromURI(mActivity,uri);
+        uploadImg = selectedImagePath;
+        mFileTemp = new File(selectedImagePath);
+        binding.ivProfile.setImageURI(uri);*/
+
+        selectedImagePath = Utility.getRealPathFromURI(mActivity,uri);
+        //selectedImagePath = ImagePathUtility.getImagePath(mActivity, uri);
         uploadImg = selectedImagePath;
 
         InputStream inputStream = null;
@@ -392,8 +400,8 @@ public class EditProfileFragment extends BaseFragment implements BSImagePicker.O
             fileOutputStream.close();
             inputStream.close();
             UCrop.of(Uri.fromFile(mFileTemp), Uri.fromFile(mFileTemp))
-                    .withAspectRatio(4, 4)
-                    .start(mActivity,this, REQ_CODE_GALLERY_PICKER3);
+                    .withAspectRatio(0, 0)
+                    .start(mActivity, this, REQ_CODE_GALLERY_PICKER3);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -423,9 +431,9 @@ public class EditProfileFragment extends BaseFragment implements BSImagePicker.O
         new File(root + "/" + getString(R.string.app_name) + "/temp").mkdirs();
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
-            mFileTemp = new File(root + "/" + getString(R.string.app_name) + "/temp/", new Date().getTime()+TEMP_PHOTO_FILE_NAME);
+            mFileTemp = new File(root + "/" + getString(R.string.app_name) + "/temp/", new Date().getTime() + TEMP_PHOTO_FILE_NAME);
         } else {
-            mFileTemp = new File(mActivity.getFilesDir(), new Date().getTime()+TEMP_PHOTO_FILE_NAME);
+            mFileTemp = new File(mActivity.getFilesDir(), new Date().getTime() + TEMP_PHOTO_FILE_NAME);
         }
     }
 

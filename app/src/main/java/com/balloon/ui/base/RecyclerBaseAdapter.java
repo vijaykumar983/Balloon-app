@@ -40,7 +40,6 @@ public abstract class RecyclerBaseAdapter extends RecyclerView.Adapter<RecyclerB
     }
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
-
         ViewDataBinding binding;
 
         public RecyclerViewHolder(@NonNull ViewDataBinding binding) {

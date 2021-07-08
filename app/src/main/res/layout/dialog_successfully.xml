@@ -23,7 +23,7 @@
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_no_internet"
+                android:src="@drawable/logo_balloon"
                 android:tint="@color/color_1786B3"
                 android:visibility="gone" />
 

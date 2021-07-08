@@ -34,17 +34,11 @@ import com.balloon.utils.ProgressDialog;
 import com.balloon.utils.Utility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
-import java.util.Map;
 
 
 public class VerificationActivity extends BaseBindingActivity {
@@ -52,9 +46,7 @@ public class VerificationActivity extends BaseBindingActivity {
     private ActivityVerificationBinding binding;
     private VerificationViewModel viewModel = null;
     private Bundle mBundle;
-    private String otp = "", userId = "", mobile = "", userStatus = "";
-    private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase;
+    private String userId = "", mobile = "";
 
 
     @Override
@@ -72,8 +64,6 @@ public class VerificationActivity extends BaseBindingActivity {
     @SuppressLint("ResourceType")
     @Override
     protected void initializeObject() {
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
         getIntentData();
         viewModel.responseLiveData.observe(this, new Observer<ApiResponse<VerifyOtpData>>() {
             @Override
@@ -87,6 +77,24 @@ public class VerificationActivity extends BaseBindingActivity {
                 handleResendOtpResult(it);
             }
         });
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        if (task.getResult() != null) {
+                            String token = task.getResult().getToken();
+                            sessionManager.setDEVICE_TOKEN(token);
+                            Log.e(TAG, "token -" + token);
+                        }
+                    }
+                });
 
     }
 
@@ -113,11 +121,10 @@ public class VerificationActivity extends BaseBindingActivity {
     private void getIntentData() {
         mBundle = getIntent().getBundleExtra("bundle");
         if (mBundle != null) {
-            otp = mBundle.getString("otp");
+            //otp = mBundle.getString("otp");
             userId = mBundle.getString("userId");
             mobile = mBundle.getString("mobile");
-            userStatus = mBundle.getString("userStatus");
-            binding.otpView.setOTP(otp);
+            //binding.otpView.setOTP(otp);
             binding.tvMobile.setText("+91-" + mobile);
         }
     }
@@ -125,7 +132,6 @@ public class VerificationActivity extends BaseBindingActivity {
 
     private void verifyOtpAPI() {
         String otp = binding.otpView.getOTP().trim();
-        if (userId != null && !userId.isEmpty() && otp != null && !otp.isEmpty()) {
             if (viewModel.isValidFormData(mActivity, otp)) {
 
                 HashMap<String, String> reqData = new HashMap<>();
@@ -139,7 +145,6 @@ public class VerificationActivity extends BaseBindingActivity {
                     showNoInternetDialog();
                 }
             }
-        }
     }
 
     private void handleResult(ApiResponse<VerifyOtpData> result) {
@@ -153,128 +158,31 @@ public class VerificationActivity extends BaseBindingActivity {
                 ProgressDialog.showProgressDialog(mActivity);
                 break;
             case SUCCESS:
-                //ProgressDialog.hideProgressDialog();
+                ProgressDialog.hideProgressDialog();
                 Log.e(TAG, "Response - " + new Gson().toJson(result));
                 if (result.getData().getStatusCode() == Constants.Success) {
 
-                    if (userStatus != null && userStatus.equalsIgnoreCase("new")) {
-                        firebaseSignup(result.getData().getUserData().getUserId(), result.getData().getUserData().getPhone() +
-                                        "@gmail.com", "123456", result.getData().getUserData().getName(),
-                                result.getData().getUserData().getProfileImage(), result.getData().getUserData().getPhone()
-                                , result.getData().getUserData().getLocation());
+                    sessionManager.setFIREBASE_ID(result.getData().getUserData().getFirebaseId());
+                    sessionManager.setLogin();
+                    sessionManager.setSocial(false);
+                    if (result.getData().getIsSend() == 1) {
+                        sessionManager.setSelectBalloon(false); //select balloon screen
                     } else {
-                        loginFirebase(result.getData().getUserData().getUserId(),result.getData().getUserData().getPhone() +
-                                        "@gmail.com", "123456", result.getData().getUserData().getName(),
-                                result.getData().getUserData().getProfileImage(), result.getData().getUserData().getPhone()
-                                , result.getData().getUserData().getLocation());
+                        sessionManager.setSelectBalloon(true); //select balloon screen
                     }
-
+                    sessionManager.setUSER_ID(result.getData().getUserData().getUserId());
+                    sessionManager.setFULL_NAME(result.getData().getUserData().getName());
+                    sessionManager.setPHONE(result.getData().getUserData().getPhone());
+                    sessionManager.setADDRESS(result.getData().getUserData().getLocation());
+                    sessionManager.setPROFILE_IMAGE(result.getData().getUserData().getProfileImage());
+                    HomeActivity.startActivity(mActivity, null, true);
+                    finish();
 
                 } else {
-                    ProgressDialog.hideProgressDialog();
                     Utility.showToastMessageError(mActivity, result.getData().getMessage());
                 }
                 break;
         }
-    }
-
-    private void firebaseSignup(String userId, String email, String password, String name, String profile, String phone, String address) {
-        //ProgressDialog.showProgressDialog(mActivity);
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                //  Log.e(TAG,"task-"+task.getResult().toString());
-
-                //------IF USER IS SUCCESSFULLY REGISTERED-----
-                if (task.isSuccessful()) {
-                    FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
-                    String user_id = current_user.getUid();
-                    String token_id = FirebaseInstanceId.getInstance().getToken();
-                    Map userMap = new HashMap();
-                    userMap.put("device_token", token_id);
-                    userMap.put("name", name);
-                    userMap.put("status", "Hello Kshitiz");
-                    userMap.put("image", profile);
-                    userMap.put("thumb_image", profile);
-                    userMap.put("online", "true");
-                    mDatabase.child(user_id).setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task1) {
-                            if (task1.isSuccessful()) {
-                                ProgressDialog.hideProgressDialog();
-                                sessionManager.setFIREBASE_ID(user_id);
-                                sessionManager.setLogin();
-                                sessionManager.setUSER_ID(userId);
-                                sessionManager.setFULL_NAME(name);
-                                sessionManager.setPHONE(phone);
-                                sessionManager.setADDRESS(address);
-                                sessionManager.setPROFILE_IMAGE(profile);
-                                HomeActivity.startActivity(mActivity, null, true);
-                                finish();
-                            } else {
-                                ProgressDialog.hideProgressDialog();
-                                Utility.showSnackBarMsgError(mActivity, "YOUR NAME IS NOT REGISTERED... MAKE NEW ACCOUNT-- ");
-                            }
-
-                        }
-                    });
-                } else {
-                    ProgressDialog.hideProgressDialog();
-                    Utility.showSnackBarMsgError(mActivity, task.getException().getMessage() + "");
-                }
-            }
-        });
-    }
-
-    private void loginFirebase(String userId,String email, String password, String name, String profile, String phone, String address) {
-        //ProgressDialog.showProgressDialog(mActivity);
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(mActivity,
-                new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            String user_id = mAuth.getCurrentUser().getUid();
-                            String token_id = FirebaseInstanceId.getInstance().getToken();
-                            Log.d("firbaseid", user_id);
-
-                            HashMap addValue = new HashMap();
-                            addValue.put("device_token", token_id);
-                            addValue.put("name", name);
-                            addValue.put("status", "Hello Kshitiz");
-                            addValue.put("image", profile);
-                            addValue.put("thumb_image", profile);
-                            addValue.put("online", "true");
-
-                            mDatabase.child(user_id).updateChildren(addValue, new DatabaseReference.CompletionListener() {
-                                @Override
-                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                    if (databaseError == null) {
-                                        ProgressDialog.hideProgressDialog();
-                                        sessionManager.setFIREBASE_ID(user_id);
-                                        sessionManager.setLogin();
-                                        sessionManager.setUSER_ID(userId);
-                                        sessionManager.setFULL_NAME(name);
-                                        sessionManager.setPHONE(phone);
-                                        sessionManager.setADDRESS(address);
-                                        sessionManager.setPROFILE_IMAGE(profile);
-                                        HomeActivity.startActivity(mActivity, null, true);
-                                        finish();
-
-                                    } else {
-                                        ProgressDialog.hideProgressDialog();
-                                        Utility.showSnackBarMsgError(mActivity, databaseError.toString());
-                                        Log.e("Error is : ", databaseError.toString());
-                                    }
-                                }
-                            });
-
-                        } else {
-                            //ProgressDialog.hideProgressDialog();
-                            //Utility.showSnackBarMsgError(mActivity, "Wrong Credentials");
-                            firebaseSignup(userId, email, password,name, profile, phone, address);
-                        }
-                    }
-                });
     }
 
     private void resendOtpAPI() {
@@ -282,7 +190,7 @@ public class VerificationActivity extends BaseBindingActivity {
 
             HashMap<String, String> reqData = new HashMap<>();
             reqData.put("userid", userId);
-            reqData.put("deviceId", "12345");
+            reqData.put("deviceId", sessionManager.getDEVICE_TOKEN());
 
             if (Utility.isOnline(mActivity)) {
                 Log.e(TAG, "Api parameters - " + reqData.toString());
@@ -309,8 +217,8 @@ public class VerificationActivity extends BaseBindingActivity {
                 if (result.getData().getStatusCode() == Constants.Success) {
 
                     showSuccessfullyDialog(result.getData().getMessage());
-                    binding.otpView.setOTP(result.getData().getData().getOtp());
-                    otp = result.getData().getData().getOtp();
+                    //binding.otpView.setOTP(result.getData().getData().getOtp());
+                    //otp = result.getData().getData().getOtp();
 
                 } else {
                     Utility.showToastMessageError(mActivity, result.getData().getMessage());
@@ -330,7 +238,6 @@ public class VerificationActivity extends BaseBindingActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         dialog.setContentView(dialogBinding.getRoot());
         dialogBinding.btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -353,7 +260,6 @@ public class VerificationActivity extends BaseBindingActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         dialog.setContentView(dialogBinding.getRoot());
         dialogBinding.btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -376,6 +282,7 @@ public class VerificationActivity extends BaseBindingActivity {
     @Override
     public void onDestroy() {
         viewModel.disposeSubscriber();
+        ProgressDialog.hideProgressDialog();
         super.onDestroy();
     }
 

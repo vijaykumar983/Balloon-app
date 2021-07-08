@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:clipToPadding="false"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/appBar"
+            layout="@layout/layout_header" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="@drawable/bg_rounded_white"
+                android:elevation="@dimen/_2sdp"
+                android:orientation="horizontal"
+                android:padding="@dimen/_2sdp"
+                android:weightSum="2">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvChat"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btnSmallSize"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_corner_rounded_btn_8dp"
+                    android:fontFamily="@font/gotham_book"
+                    android:foreground="@drawable/ripple_rec"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="Chats"
+                    android:textColor="@color/white" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvJoinReq"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btnSmallSize"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_rounded_white"
+                    android:fontFamily="@font/gotham_book"
+                    android:foreground="@drawable/ripple_rec"
+                    android:gravity="center"
+                    android:onClick="onClick"
+                    android:text="Requests"
+                    android:textColor="@color/colorBlack" />
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+               >
+
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeToRefreshChat"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/_10sdp"
+                   >
+                <LinearLayout
+                    android:id="@+id/linearChat"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvChatList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="visible"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/row_user_list" />
+
+                    <include
+                        android:id="@+id/layoutError"
+                        layout="@layout/layout_error_show" />
+
+                </LinearLayout>
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeToRefreshRequest"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/_10sdp"
+                    android:visibility="gone"
+                    >
+                <LinearLayout
+                    android:id="@+id/linearRequest"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvRequestList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="visible"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/row_user_list" />
+
+                    <include
+                        android:id="@+id/layoutError1"
+                        layout="@layout/layout_error_show1" />
+
+                </LinearLayout>
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

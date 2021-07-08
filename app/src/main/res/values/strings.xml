@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Balloon</string>
+    <string name="facebook_app_id">149785997115996</string>
+    <string name="fb_login_protocol_scheme">fb149785997115996</string>
+    <string name="google_maps_api_key">AIzaSyDfFyJP1csqfMQh3RK9NWe8qBdjFOPnwYY</string> <!--AIzaSyDSP32EaFJEnO7HdHJB8HcxhJJ0Wq8LTbU-->
+    <string name="googleAccountWebClientID">1024828720075-73mr4kbavvg697cnduic2pfh1m99bqj4.apps.googleusercontent.com</string>
+    <string name="default_notification_channel_id">24424443</string>
 
     <!--All Validations-->
     <string name="enter_mobile">Please enter mobile</string>

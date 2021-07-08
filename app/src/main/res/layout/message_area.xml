@@ -1,42 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:emojicon="http://schemas.android.com/tools">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_5sdp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/color_view"
+            />
+
     <LinearLayout
         android:id="@+id/linearBottom"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_50sdp"
         android:background="@color/colorWhite"
-        android:elevation="@dimen/_2sdp"
-        android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:weightSum="1"
         android:paddingHorizontal="@dimen/_10sdp"
         android:gravity="center_vertical"
         android:paddingVertical="@dimen/_8sdp">
 
-        <androidx.appcompat.widget.AppCompatEditText
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/Button"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            app:srcCompat="@drawable/ic_chat_arrow"
+            android:foreground="@drawable/ripple_round"
+            android:onClick="onClick"
+            android:visibility="gone"
+            />
+
+       <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/messageArea"
             android:layout_width="match_parent"
             android:layout_height="@dimen/btnSmallSize"
-            android:background="@drawable/bg_edit_rounded"
+            android:background="@color/white"
             android:fontFamily="@font/gotham_book"
             android:hint="Type message..."
             android:inputType="text"
             android:textColor="@color/colorBlack"
-            android:paddingHorizontal="@dimen/_10sdp"
             android:textColorHint="@color/color_B7B7B7"
             android:layout_weight="1"
+            android:layout_marginHorizontal="@dimen/_5sdp"
             android:textSize="@dimen/txtSizeNormal" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/sendButton"
-            android:layout_width="@dimen/_30sdp"
-            android:layout_height="@dimen/_30sdp"
-            app:srcCompat="@drawable/ic_chat_arrow"
-            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            app:srcCompat="@drawable/ic_send"
+            android:tint="@color/color_1786B3"
+            android:layout_gravity="center_vertical"
             android:foreground="@drawable/ripple_round"
             android:onClick="onClick"
             />
+    </LinearLayout>
+
     </LinearLayout>
 
 </layout>

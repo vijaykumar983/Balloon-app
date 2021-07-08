@@ -3,6 +3,7 @@ package com.balloon.ui.components.adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -18,6 +19,9 @@ import androidx.databinding.ViewDataBinding;
 import com.balloon.R;
 import com.balloon.pojo.Messages;
 import com.balloon.ui.base.RecyclerBaseAdapter;
+import com.balloon.ui.components.activities.home.HomeActivity;
+import com.balloon.ui.components.fragments.userProfile.UserProfileFragment;
+import com.balloon.utils.Constants;
 import com.balloon.utils.SessionManager;
 import com.balloon.utils.Utility;
 import com.google.firebase.database.DataSnapshot;
@@ -35,13 +39,19 @@ public class ChatAdapter extends RecyclerBaseAdapter {
     private List<Messages> list;
     private DatabaseReference mUserDatabase;
     private SessionManager sessionManager;
+    private String userImg, userId;
+    private HomeActivity homeActivity;
 
 
-    public ChatAdapter(AppCompatActivity mActivity, View.OnClickListener onClickListener, List<Messages> list, SessionManager sessionManager) {
+    public ChatAdapter(AppCompatActivity mActivity, View.OnClickListener onClickListener, List<Messages> list,
+                       SessionManager sessionManager, String userImg, String userId, HomeActivity homeActivity) {
         this.mActivity = mActivity;
         this.onClickListener = onClickListener;
         this.list = list;
         this.sessionManager = sessionManager;
+        this.userImg = userImg;
+        this.userId = userId;
+        this.homeActivity = homeActivity;
     }
 
     @Override
@@ -64,11 +74,13 @@ public class ChatAdapter extends RecyclerBaseAdapter {
         TextView tvMessage = view.findViewById(R.id.tvMessage);
         ImageView ivUserProfile = view.findViewById(R.id.ivUserProfile);
         RelativeLayout rlMessage = view.findViewById(R.id.rlMessage);
+        RelativeLayout rlMessageUser = view.findViewById(R.id.rlMessageUser);
         RelativeLayout rlTextMessage = view.findViewById(R.id.rlTextMessage);
+
+        Utility.loadImage(ivUserProfile, userImg);
 
 
         Messages c = list.get(position);
-
         String fromUser = c.getFrom();
         String messageType = c.getType();
 
@@ -95,19 +107,29 @@ public class ChatAdapter extends RecyclerBaseAdapter {
 
         if (fromUser.equals(sessionManager.getFIREBASE_ID())) {
             //current logged in user
-            //ivUserProfile.setVisibility(View.GONE);
+            ivUserProfile.setVisibility(View.GONE);
             rlMessage.setGravity(Gravity.END);
             //rlTextMessage.setBackgroundResource(R.drawable.bubble_in);
             rlTextMessage.setBackgroundResource(R.drawable.my_message);
             tvMessage.setTextColor(mActivity.getResources().getColor(R.color.colorWhite));
             //rlTextMessage.setBackgroundTintList(mActivity.getResources().getColorStateList(R.color.color_1786B3));
         } else {
-            //ivUserProfile.setVisibility(View.VISIBLE);
+            ivUserProfile.setVisibility(View.VISIBLE);
             rlMessage.setGravity(Gravity.START);
             //rlTextMessage.setBackgroundResource(R.drawable.bubble_out);
             rlTextMessage.setBackgroundResource(R.drawable.their_message);
             tvMessage.setTextColor(mActivity.getResources().getColor(R.color.colorBlack));
             //rlTextMessage.setBackgroundTintList(null);
+            rlMessageUser.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (userId != null && !userId.isEmpty()) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("userId", userId);
+                        homeActivity.changeFragment(new UserProfileFragment(), true, bundle);
+                    }
+                }
+            });
         }
         tvMessage.setText(c.getMessage());
     }

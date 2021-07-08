@@ -19,12 +19,12 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/gotham_book"
                 android:text="@string/what_do_you_want_to_do"
                 android:textAllCaps="false"
-                android:fontFamily="@font/gotham_book"
-                android:textSize="@dimen/txtSizeXXLarge"
                 android:textColor="@color/colorWhite"
-                />
+                android:textSize="@dimen/txtSizeXXLarge" />
+
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etItem"
                 android:layout_width="match_parent"
@@ -33,9 +33,11 @@
                 android:hint="@string/type_something"
                 android:inputType="text"
                 android:singleLine="true"
+                android:maxLength="15"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:minHeight="@dimen/_35sdp"
+                android:fontFamily="@font/gotham_book"
                 android:background="@drawable/bg_rounded_white"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/txtSizeNormal" />
@@ -56,33 +58,33 @@
                     android:foreground="@drawable/ripple_rec"
                     />
 
-            <RelativeLayout
-                android:id="@+id/rlClick"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                >
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/_120sdp"
-                    android:layout_height="@dimen/_150sdp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_click" />
-
-                <TextSwitcher
-                    android:id="@+id/textSwitcher"
-                    android:layout_width="@dimen/_100sdp"
+                <RelativeLayout
+                    android:id="@+id/rlClick"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Coffee"
-                    android:textAllCaps="true"
-                   android:layout_centerInParent="true"
-                    android:fontFamily="@font/gotham_bold"
-                    android:textSize="@dimen/txtSizeXXLarge"
-                    android:textColor="@color/colorWhite"
-                    />
+                    android:gravity="center_horizontal"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    >
 
-            </RelativeLayout>
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/_120sdp"
+                        android:layout_height="@dimen/_150sdp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_click" />
+
+                    <TextSwitcher
+                        android:id="@+id/textSwitcher"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="wrap_content"
+                        android:text="Coffee"
+                        android:textAllCaps="true"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/gotham_bold"
+                        android:textSize="@dimen/txtSizeXXLarge"
+                        android:textColor="@color/colorWhite"
+                        />
+
+                </RelativeLayout>
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivNext"
@@ -93,6 +95,18 @@
                     />
 
             </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSend"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/btnXSmallSize"
+                android:text="Send"
+                android:foreground="@drawable/ripple_round"
+                android:fontFamily="@font/gotham_book"
+                android:layout_marginVertical="@dimen/_30sdp"
+                android:background="@drawable/bg_rounded_white_15dp"
+                android:textColor="@color/color_1786B3"
+                />
 
         </LinearLayout>
     </RelativeLayout>

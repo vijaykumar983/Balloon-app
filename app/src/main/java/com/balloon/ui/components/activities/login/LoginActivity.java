@@ -50,9 +50,12 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 import com.yalantis.ucrop.UCrop;
 
@@ -79,13 +82,13 @@ public class LoginActivity extends BaseBindingActivity implements BSImagePicker.
     private static final String TAG = LoginActivity.class.getName();
     private ActivityLoginBinding binding;
     private LoginViewModel viewModel = null;
+    private Bundle mBundle;
+    private String userType = "", mobile = "";
 
     public static String selectedImagePath = "";
     private static final int REQ_CODE_GALLERY_PICKER3 = 30;
     private File mFileTemp;
     public static final String TEMP_PHOTO_FILE_NAME = "GoTo.png";
-    private String userStatus;
-    public static final int REQUEST_CHECK_SETTINGS = 123;
 
 
     @Override
@@ -103,8 +106,11 @@ public class LoginActivity extends BaseBindingActivity implements BSImagePicker.
     @SuppressLint("ResourceType")
     @Override
     protected void initializeObject() {
+        getIntentData();
         binding.etName.setFilters(new InputFilter[]{new EmojiExcludeFilter()});
         binding.etLocation.setFilters(new InputFilter[]{new EmojiExcludeFilter()});
+        binding.etLocation.setText(sessionManager.getLOCATION());
+        binding.etLocation.setSelected(true);
 
         viewModel.responseLiveData.observe(this, new Observer<ApiResponse<LoginData>>() {
             @Override
@@ -113,7 +119,40 @@ public class LoginActivity extends BaseBindingActivity implements BSImagePicker.
             }
         });
 
-        //checkWhetherLocationSettingsAreSatisfied();
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        if (task.getResult() != null) {
+                            String token = task.getResult().getToken();
+                            sessionManager.setDEVICE_TOKEN(token);
+                            Log.e(TAG, "token -" + token);
+                        }
+                    }
+                });
+    }
+
+    private void getIntentData() {
+        mBundle = getIntent().getBundleExtra("bundle");
+        if (mBundle != null) {
+            userType = mBundle.getString("userType");
+            mobile = mBundle.getString("mobile");
+
+            if (userType.equals("new")) {
+                binding.etPhone.setText(mobile);
+                binding.etPhone.setEnabled(false);
+                binding.etPhone.setAlpha(0.4f);
+            } else {
+                binding.etPhone.setEnabled(true);
+                binding.etPhone.setAlpha(1.0f);
+            }
+        }
     }
 
     @Override
@@ -141,96 +180,7 @@ public class LoginActivity extends BaseBindingActivity implements BSImagePicker.
         }
     }
 
-    /*private void checkWhetherLocationSettingsAreSatisfied() {
 
-        LocationRequest mLocationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(1000)
-                .setNumUpdates(2);
-
-        final LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
-        builder.setAlwaysShow(true);
-        builder.setNeedBle(true);
-        SettingsClient client = LocationServices.getSettingsClient(mActivity);
-        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
-        task.addOnSuccessListener(mActivity, new OnSuccessListener<LocationSettingsResponse>() {
-            @Override
-            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                Log.w(TAG, "onSuccess() called with: locationSettingsResponse = [" + locationSettingsResponse + "]");
-                //hasLocationPermission();
-
-
-                try {
-                    requestSingleUpdate(mActivity, new SingleShotLocationProvider.LocationCallback() {
-                        @Override
-                        public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates location) {
-                            Log.e(TAG, "my location is - " + location.latitude + " " + location.longitude);
-                            if (!SessionManager.getInstance(mActivity).isSELECT_LOCATION()) {
-                                sessionManager.setLOCATION(Utility.getCompleteAddressString(mActivity, location.latitude, location.longitude));
-                                sessionManager.setLATITUDE(String.valueOf(location.latitude));
-                                sessionManager.setLONGITUDE(String.valueOf(location.longitude));
-                               binding.etLocation.setText(sessionManager.getLOCATION());
-                                binding.etLocation.setSelected(true);
-                            }
-                            Log.e(TAG, "location - " + sessionManager.getLOCATION());
-                        }
-                    });
-
-                } catch (Exception e) {
-                    Log.e(TAG, "error - " + e.getMessage());
-                }
-
-            }
-        });
-        task.addOnFailureListener(mActivity, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception error) {
-                Log.d(TAG, "onSuccess --> onFailure() called with: e = [" + error + "]");
-                if (error instanceof ResolvableApiException) {
-                    // Location settings are not satisfied, but this can be fixed
-                    // by showing the user a dialog.
-                    try {
-                        // Show the dialog by calling startResolutionForResult(),
-                        // and check the result in onActivityResult().
-                        ResolvableApiException resolvable = (ResolvableApiException) error;
-                        resolvable.startResolutionForResult(mActivity, REQUEST_CHECK_SETTINGS);
-
-                    } catch (IntentSender.SendIntentException e) {
-
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-        });
-    }
-
-    private void buildAlertMessageNoGps() {
-        final Dialog dialog = new Dialog(this, R.style.Theme_Dialog);
-        DialogSuccessBinding dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(mActivity), R.layout.dialog_success, null, false);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.getWindow().setGravity(Gravity.CENTER);
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
-        dialog.setContentView(dialogBinding.getRoot());
-
-        dialogBinding.tvTitle.setText("GPS Settings");
-        dialogBinding.tvMessage.setText("GPS is not enabled. Please goto settings page to enable");
-        dialogBinding.tvOk.setText("Settings");
-        dialogBinding.llOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                finish();
-            }
-        });
-
-        dialog.show();
-    }*/
 
     @Override
     public void onResume() {
@@ -251,7 +201,9 @@ public class LoginActivity extends BaseBindingActivity implements BSImagePicker.
             reqData.put("name", name);
             reqData.put("mobileNo", phone);
             reqData.put("location", location);
-            reqData.put("deviceId", "1342423");
+            reqData.put("lat", sessionManager.getLATITUDE());
+            reqData.put("lng", sessionManager.getLONGITUDE());
+            reqData.put("deviceId", sessionManager.getDEVICE_TOKEN());
             /*if (selectedImagePath != null)
                 reqData.put("image", selectedImagePath);
             else
@@ -262,7 +214,10 @@ public class LoginActivity extends BaseBindingActivity implements BSImagePicker.
             MultipartBody.Part req_name = MultipartBody.Part.createFormData("name", name);
             MultipartBody.Part req_phone = MultipartBody.Part.createFormData("mobileNo", phone);
             MultipartBody.Part req_location = MultipartBody.Part.createFormData("location", location);
-            MultipartBody.Part req_deviceId = MultipartBody.Part.createFormData("deviceId", "1342423");
+            MultipartBody.Part req_deviceId = MultipartBody.Part.createFormData("deviceId", sessionManager.getDEVICE_TOKEN());
+            MultipartBody.Part req_lat = MultipartBody.Part.createFormData("lat", sessionManager.getLATITUDE());
+            MultipartBody.Part req_lng = MultipartBody.Part.createFormData("lng", sessionManager.getLONGITUDE());
+
             MultipartBody.Part profile_photo = null;
             if (selectedImagePath.isEmpty()) {
             } else {
@@ -272,7 +227,7 @@ public class LoginActivity extends BaseBindingActivity implements BSImagePicker.
             if (Utility.isOnline(mActivity)) {
                 Log.e(TAG, "Api parameters - " + reqData.toString());
                 Log.e(TAG, "profile - " + profile_photo);
-                viewModel.login(req_name, req_phone, req_location, req_deviceId, profile_photo);
+                viewModel.login(req_name, req_phone, req_location, req_deviceId, profile_photo,req_lat,req_lng);
             } else {
                 showNoInternetDialog();
             }
@@ -298,7 +253,6 @@ public class LoginActivity extends BaseBindingActivity implements BSImagePicker.
                     bundle.putString("userId", result.getData().getData().getUserId());
                     bundle.putString("otp", String.valueOf(result.getData().getData().getOtp()));
                     bundle.putString("mobile", binding.etPhone.getText().toString().trim());
-                    bundle.putString("userStatus", userStatus);
                     VerificationActivity.startActivity(mActivity, bundle, false);
 
                 } else {
@@ -320,7 +274,6 @@ public class LoginActivity extends BaseBindingActivity implements BSImagePicker.
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         dialog.setContentView(dialogBinding.getRoot());
         dialogBinding.btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -346,7 +299,12 @@ public class LoginActivity extends BaseBindingActivity implements BSImagePicker.
 
     @Override
     public void onSingleImageSelected(Uri uri, String tag) {
-        selectedImagePath = uri.getPath();
+        /*selectedImagePath = Utility.getRealPathFromURI(mActivity, uri);
+        mFileTemp = new File(selectedImagePath);
+        binding.ivProfile.setImageURI(uri);*/
+
+        selectedImagePath = Utility.getRealPathFromURI(mActivity, uri);
+        //selectedImagePath =  ImagePathUtility.getImagePath(mActivity,uri);
 
         InputStream inputStream = null;
         try {
@@ -363,7 +321,7 @@ public class LoginActivity extends BaseBindingActivity implements BSImagePicker.
             fileOutputStream.close();
             inputStream.close();
             UCrop.of(Uri.fromFile(mFileTemp), Uri.fromFile(mFileTemp))
-                    .withAspectRatio(4, 4)
+                    .withAspectRatio(0, 0)
                     .start(LoginActivity.this, REQ_CODE_GALLERY_PICKER3);
         } catch (IOException e) {
             e.printStackTrace();
@@ -373,37 +331,8 @@ public class LoginActivity extends BaseBindingActivity implements BSImagePicker.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        /*if (requestCode == REQUEST_CHECK_SETTINGS) {
-            // Make sure the request was successful
-            if (resultCode == RESULT_OK) {
 
-                try {
-                    requestSingleUpdate(mActivity, new SingleShotLocationProvider.LocationCallback() {
-                        @Override
-                        public void onNewLocationAvailable(SingleShotLocationProvider.GPSCoordinates location) {
-                            Log.e(TAG, "my location is - " + location.latitude + " " + location.longitude);
-                            if (!SessionManager.getInstance(mActivity).isSELECT_LOCATION()) {
-                                sessionManager.setLOCATION(Utility.getCompleteAddressString(mActivity, location.latitude, location.longitude));
-                                sessionManager.setLATITUDE(String.valueOf(location.latitude));
-                                sessionManager.setLONGITUDE(String.valueOf(location.longitude));
-                                binding.etLocation.setText(sessionManager.getLOCATION());
-                                binding.etLocation.setSelected(true);
-                            }
-                            Log.e(TAG, "location - " + sessionManager.getLOCATION());
-                        }
-                    });
-
-                } catch (Exception e) {
-                    Log.e(TAG, "error - " + e.getMessage());
-                }
-
-            } else {
-                //User clicks No
-                buildAlertMessageNoGps();
-            }
-        }*/
-
-        if (requestCode == REQ_CODE_GALLERY_PICKER3) {
+       if (requestCode == REQ_CODE_GALLERY_PICKER3) {
             final Uri resultUri = UCrop.getOutput(data);
             selectedImagePath = resultUri.getPath();
             Bitmap bitmap = Utility.decodeUriToBitmap(LoginActivity.this, resultUri);

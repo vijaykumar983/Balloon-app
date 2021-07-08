@@ -14,6 +14,7 @@ import com.balloon.network.RestApiFactory;
 import com.balloon.pojo.EditProfileData;
 import com.balloon.pojo.LoginData;
 import com.balloon.pojo.ProfileData;
+import com.balloon.utils.SessionManager;
 import com.balloon.utils.Utility;
 
 import java.util.HashMap;
@@ -47,8 +48,9 @@ public class EditProfileViewModel extends ViewModel {
                                   @Part MultipartBody.Part name,
                             @Part MultipartBody.Part location,
                             @Part MultipartBody.Part profile_pic,
-                                  @Part MultipartBody.Part bio) {
-        subscription = restApi.editProfile(userId,name, location, profile_pic,bio)
+                                  @Part MultipartBody.Part bio,
+                                  @Part MultipartBody.Part phone) {
+        subscription = restApi.editProfile(userId,name, location, profile_pic,bio,phone)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(new Consumer<Disposable>() {
@@ -103,7 +105,7 @@ public class EditProfileViewModel extends ViewModel {
 
 
     /*Validations */
-    public boolean isValidFormData(AppCompatActivity mActivity, String image, String name, String location,String bio) {
+    public boolean isValidFormData(AppCompatActivity mActivity, String image, String name, String location,String bio,String phone) {
 
         if (!TextUtils.isEmpty(image) && image.equals("Upload Image")) {
             Utility.showToastMessageError(mActivity, mActivity.getString(R.string.please_select_image));
@@ -117,6 +119,17 @@ public class EditProfileViewModel extends ViewModel {
         if (name.length() < 3) {
             Utility.showToastMessageError(mActivity, mActivity.getString(R.string.minimum_3_char_long_name));
             return false;
+        }
+
+        if (SessionManager.getInstance(mActivity).getSocial()) {
+            if (TextUtils.isEmpty(phone)) {
+                Utility.showSnackBarMsgError(mActivity, mActivity.getString(R.string.enter_mobile));
+                return false;
+            }
+            if (phone.length() < 9) {
+                Utility.showSnackBarMsgError(mActivity, mActivity.getString(R.string.enter_valid_mobile_number));
+                return false;
+            }
         }
 
         if (TextUtils.isEmpty(location)) {

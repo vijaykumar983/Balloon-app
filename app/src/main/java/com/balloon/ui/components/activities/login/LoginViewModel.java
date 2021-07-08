@@ -38,8 +38,10 @@ public class LoginViewModel extends ViewModel {
                                     @Part MultipartBody.Part phone,
                                     @Part MultipartBody.Part location,
                                     @Part MultipartBody.Part deviceId,
-                                    @Part MultipartBody.Part profile_pic) {
-        subscription = restApi.login(name, phone, location,deviceId, profile_pic)
+                                    @Part MultipartBody.Part profile_pic,
+                            @Part MultipartBody.Part latitude,
+                            @Part MultipartBody.Part longitude) {
+        subscription = restApi.login(name, phone, location,deviceId, profile_pic,latitude,longitude)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(new Consumer<Disposable>() {

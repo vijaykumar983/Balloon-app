@@ -18,7 +18,7 @@
                 android:layout_height="@dimen/_50sdp"
                 android:theme="@style/BottomNavigationTheme"
                 android:layout_alignParentBottom="true"
-                android:layout_gravity="bottom"
+                android:layout_gravity="center"
                 app:labelVisibilityMode="unlabeled"
                 android:background="@color/color_1786B3"
                 app:itemIconSize="@dimen/_22sdp"

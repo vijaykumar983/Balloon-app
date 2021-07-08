@@ -34,7 +34,7 @@
                 android:layout_marginHorizontal="@dimen/_50sdp"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                android:fontFamily="@font/poppins_regular"
+                android:fontFamily="@font/gotham_book"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:scrollHorizontally="true"
                 android:singleLine="true"

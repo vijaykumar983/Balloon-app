@@ -42,6 +42,7 @@
                 android:layout_toEndOf="@id/ivBack"
                 android:layout_toStartOf="@id/btnSetting"
                 android:text="Edit Profile"
+                android:fontFamily="@font/gotham_book"
                 android:layout_marginLeft="@dimen/_55sdp"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/txtSizeNormal" />
@@ -52,6 +53,7 @@
                 android:layout_height="@dimen/_25sdp"
                 android:text="Setting"
                 android:textAllCaps="false"
+                android:visibility="invisible"
                 android:foreground="@drawable/ripple_round"
                 android:fontFamily="@font/gotham_book"
                 android:background="@drawable/bg_rounded_white_15dp"
@@ -103,7 +105,7 @@
                         android:layout_width="@dimen/_170sdp"
                         android:layout_height="@dimen/_150sdp"
                         android:layout_centerHorizontal="true"
-                        android:src="@drawable/logo_balloon"
+                        android:src="@drawable/user"
                         android:layout_gravity="center_horizontal"
                         android:scaleType="centerCrop"
                         app:shape="guitar_pick" />
@@ -148,6 +150,7 @@
                         android:paddingLeft="@dimen/_25sdp"
                         android:paddingRight="@dimen/_5sdp"
                         android:singleLine="true"
+                        android:fontFamily="@font/gotham_book"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/txtSizeNormal" />
                 </RelativeLayout>
@@ -176,6 +179,7 @@
                         android:paddingLeft="@dimen/_25sdp"
                         android:paddingRight="@dimen/_5sdp"
                         android:singleLine="true"
+                        android:fontFamily="@font/gotham_book"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/txtSizeNormal" />
 
@@ -204,6 +208,7 @@
                         android:paddingLeft="@dimen/_25sdp"
                         android:paddingRight="@dimen/_5sdp"
                         android:singleLine="true"
+                        android:fontFamily="@font/gotham_book"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/txtSizeNormal" />
 
@@ -218,10 +223,12 @@
                         android:layout_width="@dimen/_12sdp"
                         android:layout_height="@dimen/_12sdp"
                         android:layout_centerVertical="true"
+                        android:layout_alignTop="@id/etBio"
                         android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_7sdp"
                         app:srcCompat="@drawable/ic_info" />
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <!--<androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/etBio"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -232,8 +239,30 @@
                         android:paddingLeft="@dimen/_25sdp"
                         android:paddingRight="@dimen/_5sdp"
                         android:singleLine="true"
+                        android:fontFamily="@font/gotham_book"
                         android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/txtSizeNormal" />
+                        android:textSize="@dimen/txtSizeNormal" />-->
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etBio"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_80sdp"
+                        android:backgroundTint="@color/color_939393"
+                        android:gravity="top|left"
+                        android:hint="bio"
+                        android:inputType="textMultiLine"
+                        android:paddingLeft="@dimen/_25sdp"
+                        android:paddingRight="@dimen/_5sdp"
+                        android:singleLine="true"
+                        android:fontFamily="@font/gotham_book"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/txtSizeNormal"
+                        android:lines="5"
+                        android:maxLines="10"
+                        android:minHeight="@dimen/_35sdp"
+                        android:minLines="3"
+                        android:textColorHint="@color/color_B7B7B7"
+                        />
 
                 </RelativeLayout>
 

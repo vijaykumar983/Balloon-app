@@ -66,6 +66,8 @@ public class ProfileData{
 
 
 		public static class Userinfo{
+			@SerializedName("rating")
+			private String rating;
 
 			@SerializedName("image")
 			private String image;
@@ -90,6 +92,14 @@ public class ProfileData{
 
 			@SerializedName("base_urlImage")
 			private String baseUrlImage;
+
+			public void setRating(String rating){
+				this.rating = rating;
+			}
+
+			public String getRating(){
+				return rating;
+			}
 
 			public void setImage(String image){
 				this.image = image;

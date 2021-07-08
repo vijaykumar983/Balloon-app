@@ -39,9 +39,9 @@ public final class RestApiFactory {
                 return chain.proceed(request);
             }
         })).addInterceptor(interceptor);
-        httpClient.connectTimeout(5, TimeUnit.MINUTES);
-        httpClient.readTimeout(5, TimeUnit.MINUTES);
-        httpClient.writeTimeout(5, TimeUnit.MINUTES);
+        httpClient.connectTimeout(2, TimeUnit.MINUTES);
+        httpClient.readTimeout(2, TimeUnit.MINUTES);
+        httpClient.writeTimeout(2, TimeUnit.MINUTES);
 
         Retrofit retrofit = (new Retrofit.Builder()).baseUrl(SERVER_PATH)
                 .addConverterFactory(GsonConverterFactory.create())

@@ -1,0 +1,63 @@
+package com.balloon.ui.components.fragments.userProfile;
+
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+
+import com.balloon.network.ApiResponse;
+import com.balloon.network.RestApi;
+import com.balloon.network.RestApiFactory;
+import com.balloon.pojo.ProfileData;
+import com.balloon.pojo.UploadImageData;
+
+import java.util.HashMap;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.MultipartBody;
+import retrofit2.http.Part;
+
+public class UserProfileViewModel extends ViewModel {
+    MutableLiveData<ApiResponse<ProfileData>> responseLiveData = new MutableLiveData<>();
+    ApiResponse<ProfileData> apiResponse = null;
+
+
+    private RestApi restApi = null;
+    private Disposable subscription = null;
+
+
+    {
+        restApi = RestApiFactory.create();
+        apiResponse = new ApiResponse<>(ApiResponse.Status.LOADING, null, null);
+    }
+
+    public final void getProfile(HashMap<String, String> reqData) {
+        subscription = restApi.getProfile(reqData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        responseLiveData.postValue(apiResponse.loading());
+                    }
+                })
+                .subscribe(new Consumer<ProfileData>() {
+                    @Override
+                    public void accept(ProfileData profileData) throws Exception {
+                        responseLiveData.postValue(apiResponse.success(profileData));
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        responseLiveData.postValue(apiResponse.error(throwable));
+                    }
+                });
+
+    }
+
+    public void disposeSubscriber() {
+        if (subscription != null)
+            subscription.dispose();
+    }
+}

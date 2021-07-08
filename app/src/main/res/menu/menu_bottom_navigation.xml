@@ -3,6 +3,7 @@
 
     <item
         android:id="@+id/menuProfile"
+        android:iconTint="@color/white"
         android:icon="@drawable/bottom_profile"
         android:title="Profile" />
 
@@ -13,7 +14,8 @@
 
     <item
         android:id="@+id/menuMessage"
-        android:icon="@drawable/bottom_massage"
+        android:icon="@drawable/chat13"
+        android:iconTint="@color/white"
         android:title="Message" />
 
 </menu>

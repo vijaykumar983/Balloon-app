@@ -3,6 +3,7 @@ package com.balloon.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -11,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import com.balloon.R;
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
+import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,8 +56,8 @@ public class Utility {
     public static void loadPicture(ImageView view, String imageUrl) {
         Glide.with(view.getContext())
                 .load(imageUrl)
-                .placeholder(R.color.color_view)
-                .error(ContextCompat.getDrawable(view.getContext(), R.color.color_view))
+                .placeholder(R.drawable.user)
+                .error(ContextCompat.getDrawable(view.getContext(), R.drawable.user))
                 .into(view);
     }
 
@@ -308,5 +311,20 @@ public class Utility {
 
         return formattedDate;
     }
+
+    public static String getRealPathFromURI(Activity mActivity,Uri contentURI) {
+        String result;
+        Cursor cursor = mActivity.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
+
 
 }

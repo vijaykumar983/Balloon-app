@@ -1,12 +1,20 @@
 package com.balloon.network;
 
+import com.balloon.pojo.AcceptRejectData;
 import com.balloon.pojo.BalloonListData;
+import com.balloon.pojo.BlockUnblockData;
 import com.balloon.pojo.CategoryData;
+import com.balloon.pojo.ChatUserListData;
 import com.balloon.pojo.EditProfileData;
+import com.balloon.pojo.LoginCheckData;
 import com.balloon.pojo.LoginData;
+import com.balloon.pojo.LoginSocialData;
 import com.balloon.pojo.ProfileData;
+import com.balloon.pojo.QuestionListData;
 import com.balloon.pojo.ResendOtpData;
 import com.balloon.pojo.SendBalloonData;
+import com.balloon.pojo.SendRequestData;
+import com.balloon.pojo.SubmitReviewData;
 import com.balloon.pojo.UploadImageData;
 import com.balloon.pojo.VerifyOtpData;
 
@@ -27,7 +35,9 @@ public interface RestApi {
                                 @Part MultipartBody.Part phone,
                                 @Part MultipartBody.Part location,
                                 @Part MultipartBody.Part deviceId,
-                                @Part MultipartBody.Part profile_pic);
+                                @Part MultipartBody.Part profile_pic,
+                                @Part MultipartBody.Part latitude,
+                                @Part MultipartBody.Part longitude);
 
     @FormUrlEncoded
     @POST("/balloon/Webservice/otpverify")
@@ -43,7 +53,8 @@ public interface RestApi {
                                             @Part MultipartBody.Part name,
                                             @Part MultipartBody.Part location,
                                             @Part MultipartBody.Part profile_pic,
-                                            @Part MultipartBody.Part bio);
+                                            @Part MultipartBody.Part bio,
+                                            @Part MultipartBody.Part phone);
 
     @FormUrlEncoded
     @POST("/balloon/Webservice/profile")
@@ -65,4 +76,36 @@ public interface RestApi {
     @POST("/balloon/Webservice/uploadImages")
     Observable<UploadImageData> uploadImage(@Part MultipartBody.Part userId,
                                             @Part MultipartBody.Part image);
+
+    @FormUrlEncoded
+    @POST("/balloon/Webservice/loginSocail")
+    Observable<LoginSocialData> loginSocialSignup(@FieldMap HashMap<String, String> reqData);
+
+    @FormUrlEncoded
+    @POST("/balloon/Webservice/chatUserList")
+    Observable<ChatUserListData> chatUserList(@FieldMap HashMap<String, String> reqData);
+
+    @FormUrlEncoded
+    @POST("/balloon/Webservice/sendRequest")
+    Observable<SendRequestData> sendRequest(@FieldMap HashMap<String, String> reqData);
+
+    @FormUrlEncoded
+    @POST("/balloon/Webservice/acceptReject")
+    Observable<AcceptRejectData> acceptReject(@FieldMap HashMap<String, String> reqData);
+
+    @FormUrlEncoded
+    @POST("/balloon/Webservice/questionsList")
+    Observable<QuestionListData> questionList(@FieldMap HashMap<String, String> reqData);
+
+    @FormUrlEncoded
+    @POST("/balloon/Webservice/submitReview")
+    Observable<SubmitReviewData> submitReview(@FieldMap HashMap<String, String> reqData);
+
+    @FormUrlEncoded
+    @POST("/balloon/Webservice/checkLogin")
+    Observable<LoginCheckData> loginCheck(@FieldMap HashMap<String, String> reqData);
+
+    @FormUrlEncoded
+    @POST("/balloon/Webservice/blockUnBlock")
+    Observable<BlockUnblockData> blockUnblock(@FieldMap HashMap<String, String> reqData);
 }

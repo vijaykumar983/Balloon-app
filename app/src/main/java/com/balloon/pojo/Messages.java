@@ -3,21 +3,21 @@ package com.balloon.pojo;
 public class Messages {
 
     private String message;
-    private boolean seen;
     private long time;
     private String type;
     private String from;
+    private String user;
 
     public Messages(){
 
     }
 
-    public Messages(String message, boolean seen, long time, String type, String from) {
+    public Messages(String message, long time, String type, String from,String user) {
         this.message = message;
-        this.seen = seen;
         this.time = time;
         this.type = type;
         this.from = from;
+        this.user = user;
     }
 
     public String getMessage() {
@@ -26,14 +26,6 @@ public class Messages {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public boolean getSeen() {
-        return seen;
-    }
-
-    public void setSeen(boolean seen) {
-        this.seen = seen;
     }
 
     public long getTime() {
@@ -46,6 +38,14 @@ public class Messages {
 
     public String getType() {
         return type;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getUser() {
+        return user;
     }
 
     public void setType(String type) {

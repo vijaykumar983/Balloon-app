@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/_20sdp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            app:cardBackgroundColor="@color/colorWhite"
+            app:cardCornerRadius="@dimen/_20sdp"
+            app:cardElevation="@dimen/_5sdp"
+            app:cardPreventCornerOverlap="true"
+            app:contentPadding="0dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:minHeight="@dimen/_80sdp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivClose"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:tint="@color/white"
+                        android:background="@drawable/bg_ovel_rounded_default"
+                        android:foreground="@drawable/ripple_round"
+                        android:src="@drawable/ic_cancel" />
+
+                    <com.balloon.utils.ShapesImage
+                        android:id="@+id/ivProfile"
+                        android:layout_width="@dimen/_170sdp"
+                        android:layout_height="@dimen/_150sdp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/logo_balloon"
+                        android:layout_gravity="center_horizontal"
+                        android:scaleType="centerCrop"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        app:shape="guitar_pick" />
+
+                  <!--  <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="UserName"
+                        android:textColor="@color/color_1786B3"
+                        android:textSize="@dimen/txtSizeLarge" />-->
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="User name"
+                        android:layout_below="@id/ivProfile"
+                        android:textColor="@color/color_1786B3"
+
+                        android:textSize="@dimen/txtSizeLarge" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:layout_below="@id/tvUserName"
+                        android:gravity="center"
+                        android:foreground="@drawable/ripple_rec"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginHorizontal="@dimen/_15sdp"
+                        >
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnBlock"
+                        android:layout_width="@dimen/_60sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:text="Block"
+                        android:textAllCaps="false"
+                        android:gravity="center"
+                        android:foreground="@drawable/ripple_rec"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/poppins_regular"
+                        android:textSize="@dimen/txtSizeNormal"
+                        android:layout_marginRight="@dimen/_15sdp"
+                        android:background="@drawable/bg_corner_rounded_btn"
+                        />
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btnDelete"
+                            android:layout_width="@dimen/_60sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:text="Delete"
+                            android:textAllCaps="false"
+                            android:gravity="center"
+                            android:foreground="@drawable/ripple_rec"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/poppins_regular"
+                            android:textSize="@dimen/txtSizeNormal"
+                            android:background="@drawable/bg_corner_rounded_btn"
+                            />
+
+
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+</layout>

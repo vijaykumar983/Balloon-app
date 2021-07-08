@@ -1,10 +1,23 @@
 package com.balloon.ui.components.activities.loginOption;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.balloon.network.ApiResponse;
+import com.balloon.network.RestApi;
+import com.balloon.network.RestApiFactory;
+import com.balloon.pojo.LoginSocialData;
+
+import java.util.HashMap;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 public class LoginOptionViewModel extends ViewModel {
-  /*  MutableLiveData<ApiResponse<LoginSignupData>> responseLiveData = new MutableLiveData<>();
-    ApiResponse<LoginSignupData> apiResponse = null;
+    MutableLiveData<ApiResponse<LoginSocialData>> responseLiveData = new MutableLiveData<>();
+    ApiResponse<LoginSocialData> apiResponse = null;
 
 
     private RestApi restApi = null;
@@ -17,7 +30,7 @@ public class LoginOptionViewModel extends ViewModel {
     }
 
     public final void login_signup(HashMap<String, String> reqData) {
-        subscription = restApi.loginSignup(reqData)
+        subscription = restApi.loginSocialSignup(reqData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(new Consumer<Disposable>() {
@@ -26,9 +39,9 @@ public class LoginOptionViewModel extends ViewModel {
                         responseLiveData.postValue(apiResponse.loading());
                     }
                 })
-                .subscribe(new Consumer<LoginSignupData>() {
+                .subscribe(new Consumer<LoginSocialData>() {
                     @Override
-                    public void accept(LoginSignupData loginSignupData) throws Exception {
+                    public void accept(LoginSocialData loginSignupData) throws Exception {
                         responseLiveData.postValue(apiResponse.success(loginSignupData));
                     }
                 }, new Consumer<Throwable>() {
@@ -45,19 +58,5 @@ public class LoginOptionViewModel extends ViewModel {
         if (subscription != null)
             subscription.dispose();
     }
-
-
-    *//*Validations*//*
-    public boolean isValidFormData(AppCompatActivity mActivity, String mobile) {
-        if (TextUtils.isEmpty(mobile)) {
-            Utility.showSnackBarMsgError(mActivity, mActivity.getString(R.string.enter_valid_mobile_number));
-            return false;
-        }
-        if (mobile.length() < 9) {
-            Utility.showSnackBarMsgError(mActivity, mActivity.getString(R.string.enter_valid_mobile_number));
-            return false;
-        }
-        return true;
-    }*/
 
 }

@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:fontFamily="@font/poppins_medium"
+                android:fontFamily="@font/gotham_medium"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="No Data available!"

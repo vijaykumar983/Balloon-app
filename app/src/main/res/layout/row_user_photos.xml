@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:id="@+id/rowUserPhotoItem"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_margin="@dimen/_5sdp"
+        android:elevation="@dimen/_2sdp"
+        >
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="@dimen/_10sdp"
+            android:visibility="visible"
+            >
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/logo_balloon"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center"
+                />
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+</layout>

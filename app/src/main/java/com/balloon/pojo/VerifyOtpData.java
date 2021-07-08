@@ -10,6 +10,9 @@ public class VerifyOtpData {
     @SerializedName("message")
     private String message;
 
+    @SerializedName("isSend")
+    private int isSend;
+
     @SerializedName("statusCode")
     private int statusCode;
 
@@ -29,6 +32,14 @@ public class VerifyOtpData {
         return message;
     }
 
+    public void setIsSend(int isSend) {
+        this.isSend = isSend;
+    }
+
+    public int getIsSend() {
+        return isSend;
+    }
+
     public void setStatusCode(int statusCode) {
         this.statusCode = statusCode;
     }
@@ -39,6 +50,9 @@ public class VerifyOtpData {
 
 
     public static class UserData {
+
+        @SerializedName("firebase_id")
+        private String firebaseId;
 
         @SerializedName("phone")
         private String phone;
@@ -57,6 +71,14 @@ public class VerifyOtpData {
 
         @SerializedName("deviceID")
         private String deviceID;
+
+        public void setFirebaseId(String firebaseId){
+            this.firebaseId = firebaseId;
+        }
+
+        public String getFirebaseId(){
+            return firebaseId;
+        }
 
         public void setPhone(String phone) {
             this.phone = phone;

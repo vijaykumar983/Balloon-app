@@ -1,74 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
+        android:animateLayoutChanges="true"
         android:background="@drawable/splash_background"
-        android:orientation="vertical">
+        >
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/rlHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_centerInParent="true"
-            android:layout_marginHorizontal="@dimen/_40sdp"
-            android:orientation="vertical">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/send_a"
-            android:textAllCaps="true"
-            android:fontFamily="@font/gotham_book"
-            android:textSize="@dimen/txtSizeXXLarge"
-            android:textColor="@color/colorWhite"
-            />
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/balloon"
-                android:textAllCaps="true"
-                android:fontFamily="@font/gotham_bold"
-                android:textSize="@dimen/txtSizeXXXLarge"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:textColor="@color/colorWhite"
-                />
-            <View
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_2sdp"
-                android:background="@color/colorWhite"
-                android:layout_marginVertical="@dimen/_30sdp"
-                />
-
-            <RelativeLayout
-                android:id="@+id/rlClick"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                >
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/_15sdp"
+            android:paddingVertical="@dimen/_5sdp">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="@dimen/_120sdp"
-                android:layout_height="@dimen/_150sdp"
-                android:src="@drawable/ic_click"
-                android:scaleType="fitXY"
-                android:layout_centerInParent="true"
-                />
-                <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/ivBack"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_alignParentLeft="true"
+                android:foreground="@drawable/ripple_round"
+                android:visibility="invisible"
+                android:src="@drawable/ic_back_arrow" />
+
+            <LinearLayout
+                android:id="@+id/btnAddBalloon"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:foreground="@drawable/ripple_round"
+                android:background="@drawable/bottom_bloon"
+                >
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:src="@drawable/ic_add"
+                    android:tint="@color/color_1786B3"
+                    />
+               <!-- <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/click"
+                    android:text="Add Balloon"
                     android:textAllCaps="false"
-                   android:layout_centerInParent="true"
                     android:fontFamily="@font/gotham_book"
-                    android:textSize="@dimen/txtSizeLarge"
-                    android:textColor="@color/colorWhite"
-                    />
+                    android:textSize="@dimen/txtSizeSmall"
+                    android:textColor="@color/color_1786B3"
+                    />-->
 
-            </RelativeLayout>
+            </LinearLayout>
 
-        </LinearLayout>
+            <!--<androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btnAddBalloon"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:text="+Add Balloon"
+                android:textAllCaps="false"
+                android:gravity="center"
+                android:src="@drawable/ic_add"
+                android:tint="@color/color_1786B3"
+                android:foreground="@drawable/ripple_round"
+                android:fontFamily="@font/gotham_book"
+                android:textSize="@dimen/txtSizeLarge"
+                android:background="@drawable/bg_rounded_white_15dp"
+                android:textColor="@color/color_1786B3"
+                android:layout_alignParentRight="true"
+                />-->
+        </RelativeLayout>
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_50sdp"
+            />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvBalloons"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_below="@id/rlHeader"
+                app:reverseLayout="false"
+                android:fitsSystemWindows="true"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                />
+
     </RelativeLayout>
+
 </layout>

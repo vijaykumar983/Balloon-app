@@ -1,0 +1,25 @@
+-- Merging decision tree log ---
+manifest
+ADDED from F:\jploft projects\balloon\balloon\supernova-emoji-library\src\main\AndroidManifest.xml:1:1-71
+INJECTED from F:\jploft projects\balloon\balloon\supernova-emoji-library\src\main\AndroidManifest.xml:1:1-71
+INJECTED from F:\jploft projects\balloon\balloon\supernova-emoji-library\src\main\AndroidManifest.xml:1:1-71
+	package
+		ADDED from F:\jploft projects\balloon\balloon\supernova-emoji-library\src\main\AndroidManifest.xml:1:12-58
+		INJECTED from F:\jploft projects\balloon\balloon\supernova-emoji-library\src\main\AndroidManifest.xml
+		INJECTED from F:\jploft projects\balloon\balloon\supernova-emoji-library\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from F:\jploft projects\balloon\balloon\supernova-emoji-library\src\main\AndroidManifest.xml:1:1-71
+uses-sdk
+INJECTED from F:\jploft projects\balloon\balloon\supernova-emoji-library\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from F:\jploft projects\balloon\balloon\supernova-emoji-library\src\main\AndroidManifest.xml
+INJECTED from F:\jploft projects\balloon\balloon\supernova-emoji-library\src\main\AndroidManifest.xml
+INJECTED from F:\jploft projects\balloon\balloon\supernova-emoji-library\src\main\AndroidManifest.xml
+INJECTED from F:\jploft projects\balloon\balloon\supernova-emoji-library\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from F:\jploft projects\balloon\balloon\supernova-emoji-library\src\main\AndroidManifest.xml
+		ADDED from F:\jploft projects\balloon\balloon\supernova-emoji-library\src\main\AndroidManifest.xml
+		INJECTED from F:\jploft projects\balloon\balloon\supernova-emoji-library\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from F:\jploft projects\balloon\balloon\supernova-emoji-library\src\main\AndroidManifest.xml
+		ADDED from F:\jploft projects\balloon\balloon\supernova-emoji-library\src\main\AndroidManifest.xml
+		INJECTED from F:\jploft projects\balloon\balloon\supernova-emoji-library\src\main\AndroidManifest.xml

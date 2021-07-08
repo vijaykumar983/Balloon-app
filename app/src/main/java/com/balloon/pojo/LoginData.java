@@ -87,6 +87,9 @@ public class LoginData {
 
         public static class UserData {
 
+            @SerializedName("firebase_id")
+            private String firebaseId;
+
             @SerializedName("phone")
             private String phone;
 
@@ -104,6 +107,14 @@ public class LoginData {
 
             @SerializedName("deviceID")
             private String deviceID;
+
+            public void setFirebaseId(String firebaseId){
+                this.firebaseId = firebaseId;
+            }
+
+            public String getFirebaseId(){
+                return firebaseId;
+            }
 
             public void setPhone(String phone) {
                 this.phone = phone;

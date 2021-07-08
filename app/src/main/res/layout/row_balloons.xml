@@ -1,42 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <AbsoluteLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/rowBalloonItem"
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rowBalloonItem"
+    android:layout_width="match_parent"
+    android:layout_height="340dp"
+    android:layout_margin="5dp"
+    tools:ignore="Deprecated">
+
+    <RelativeLayout
+        android:id="@+id/rlmain"
         android:layout_width="match_parent"
-        android:layout_height="310dp"
-        android:layout_margin="5dp"
-        tools:ignore="Deprecated">
+        android:layout_height="match_parent">
+
+        <pl.droidsonroids.gif.GifImageView
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="31dp"
+            android:src="@drawable/new_gif"
+            android:tint="@color/white"
+            android:layout_marginLeft="1.5dp"
+            android:visibility="visible" />
 
         <RelativeLayout
-            android:id="@+id/rlmain"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
-            <pl.droidsonroids.gif.GifImageView
-                android:layout_width="250dp"
+            <com.balloon.utils.ShapesImage
+                android:id="@+id/siListImage"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_centerHorizontal="true"
+                android:orientation="vertical"
+                android:scaleType="fitXY"
+                android:src="@color/white"
+                android:clickable="true"
+                app:shape="guitar_pick" />
+
+            <LinearLayout
+                android:id="@+id/llName"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/new_gif"
-                android:visibility="visible" />
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="30dp"
+                android:alpha="0.8"
+                android:background="@drawable/background4"
+                android:gravity="center"
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="5dp"
+                android:visibility="gone"
+                android:weightSum="1">
 
-            <RelativeLayout
-                android:layout_width="250dp"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/gotham_medium"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="Prachi Gupta"
+                        android:textColor="#000"
+                        android:textSize="8sp" />
+
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/ivProfile"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="3dp"
+                        android:layout_weight="0"
+                        android:src="@drawable/logo_balloon"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="0dp" />
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- <TextView
+                 android:id="@+id/tvname"
+                 android:layout_marginTop="40dp"
+                 android:layout_width="70dp"
+                 android:layout_height="wrap_content"
+                 android:textColor="#000"
+                 android:paddingVertical="5dp"
+                 android:paddingHorizontal="5dp"
+                 android:visibility="gone"
+                 android:textSize="8sp"
+                 android:gravity="center"
+                 android:layout_marginLeft="10dp"
+                 android:fontFamily="@font/gotham_book"
+                 android:background="@drawable/background4"
+                 android:text="Prachi Gupta"/>-->
+
+            <LinearLayout
+                android:id="@+id/llActivity"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp">
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="120dp"
+                android:layout_marginEnd="40dp"
+                android:alpha="0.8"
+                android:background="@drawable/background4"
+                android:gravity="center"
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="5dp"
+                android:visibility="gone"
+                android:weightSum="1">
 
-                <com.balloon.utils.ShapesImage
-                    android:id="@+id/siListImage"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_centerHorizontal="true"
-                    android:orientation="vertical"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/logo"
-                    app:shape="guitar_pick" />
-            </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+
+                    >
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivCategory"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="3dp"
+                        android:layout_weight="0"
+                        android:src="@drawable/idea_1" />
 
 
+                    <TextView
+                        android:id="@+id/tvactivity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/gotham_medium"
+                        android:singleLine="false"
+                        android:text="Coffee"
+                        android:textColor="#000"
+                        android:maxLength="15"
+                        android:minLines="1"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:textSize="8sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--<TextView
+                android:id="@+id/tvactivity"
+                android:layout_alignParentEnd="true"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:layout_marginTop="90dp"
+                android:visibility="gone"
+                android:fontFamily="@font/gotham_book"
+                android:paddingVertical="5dp"
+                android:paddingHorizontal="5dp"
+                android:layout_marginEnd="25dp"
+                android:textSize="8sp"
+                android:gravity="center"
+                android:background="@drawable/background4"
+                android:text= "Coffee"/>-->
         </RelativeLayout>
-    </AbsoluteLayout>
 
-</layout>
+
+    </RelativeLayout>
+</AbsoluteLayout>

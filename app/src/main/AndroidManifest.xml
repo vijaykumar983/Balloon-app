@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.balloon">
 
+    <!-- For INTERNET Permission -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -21,6 +23,7 @@
     <application
         android:name=".App"
         android:allowBackup="true"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -30,7 +33,27 @@
         android:hardwareAccelerated="true"
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
+        tools:replace="android:allowBackup"
         android:theme="@style/Theme.Balloon">
+
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_api_key" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+
 
         <!--SplashActivity-->
         <activity
@@ -58,12 +81,20 @@
             android:theme="@style/AppThemeStatusBarSplash"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
+        <!-- LoginMainActivity -->
+        <activity
+            android:name=".ui.components.activities.loginMain.LoginMainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeStatusBarSplash"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
         <!-- VerificationActivity -->
         <activity
             android:name=".ui.components.activities.verification.VerificationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeStatusBarSplash"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+
 
         <!-- HomeActivity -->
         <activity
@@ -72,9 +103,9 @@
             android:theme="@style/AppThemeStatusBarSplash"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
 
-        <!-- SettingActivity -->
+        <!-- StaticActivity -->
         <activity
-            android:name=".ui.components.activities.settings.SettingActivity"
+            android:name=".ui.components.activities.staticPage.StaticPageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeStatusBarSplash"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
@@ -95,6 +126,32 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepath" />
         </provider>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_launcher_foreground" />
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+
+
+        <service
+            android:name=".fcm.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
 
     </application>

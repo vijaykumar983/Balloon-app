@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -34,8 +33,7 @@ import com.balloon.pojo.CategoryData;
 import com.balloon.pojo.SendBalloonData;
 import com.balloon.ui.base.BaseFragment;
 import com.balloon.ui.components.activities.home.HomeActivity;
-import com.balloon.ui.components.adapters.BalloonsAdapter;
-import com.balloon.ui.components.fragments.balloons.BalloonsFragment;
+import com.balloon.ui.components.fragments.home.HomeFragment;
 import com.balloon.utils.Constants;
 import com.balloon.utils.ProgressDialog;
 import com.balloon.utils.Utility;
@@ -55,9 +53,8 @@ public class SelectBalloonFragment extends BaseFragment {
     private ArrayList<CategoryData.Data.CategoryItem> categoryData;
     private ArrayList<BalloonListData.Data.BubblesItem> balloonItemData;
 
-   // private static final String[] TEXTS = {"COFFEE", "PIZZA", "BURGER"};
     private int index = 0;
-    private String text = "";
+    private String text = "",categoryId="";
 
     @Override
     protected ViewDataBinding setBinding(LayoutInflater inflater, ViewGroup container) {
@@ -82,17 +79,17 @@ public class SelectBalloonFragment extends BaseFragment {
             public View makeView() {
                 TextView textView = new TextView(mActivity);
                 textView.setGravity(Gravity.CENTER);
-                textView.setTextSize(32f);
-                textView.setSelected(true);
+                textView.setTextSize(30f);
+                //textView.setSelected(true);
                 textView.setSingleLine();
-                textView.setHorizontallyScrolling(true);
-                textView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+                //textView.setHorizontallyScrolling(true);
+                textView.setEllipsize(TextUtils.TruncateAt.END);
                 textView.setTextColor(Color.WHITE);
                 return textView;
             }
         });
-        binding.textSwitcher.setInAnimation(mActivity, android.R.anim.fade_in);
-        binding.textSwitcher.setOutAnimation(mActivity, android.R.anim.fade_out);
+        //binding.textSwitcher.setInAnimation(mActivity, android.R.anim.fade_in);
+        //binding.textSwitcher.setOutAnimation(mActivity, android.R.anim.fade_out);
         categoryApi();
     }
 
@@ -135,6 +132,7 @@ public class SelectBalloonFragment extends BaseFragment {
         binding.rlClick.setOnClickListener(this);
         binding.ivPrevious.setOnClickListener(this);
         binding.ivNext.setOnClickListener(this);
+        binding.btnSend.setOnClickListener(this);
         binding.etItem.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -155,6 +153,7 @@ public class SelectBalloonFragment extends BaseFragment {
                     if (categoryData != null && categoryData.size() != 0) {
                         binding.textSwitcher.setText(categoryData.get(index).getTitle().toUpperCase());
                         text = categoryData.get(index).getTitle().toUpperCase();
+                        categoryId = categoryData.get(index).getId();
                     }
                 }
 
@@ -167,33 +166,37 @@ public class SelectBalloonFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rlClick:
-                sendBalloonApi();
+
                 break;
             case R.id.ivPrevious:
-                if(categoryData.size()>=2)
-                {
-                    if (index - 1 >= 0)
+                if (categoryData.size() > 1) {
+                    if (index > 0) {
                         index = index - 1;
-                    else
-                        index = 1;
-                    text = categoryData.get(index).getTitle();
-                    binding.textSwitcher.setText(categoryData.get(index).getTitle());
-                    binding.etItem.setText("");
+                        text = categoryData.get(index).getTitle();
+                        categoryId = categoryData.get(index).getId();
+                        binding.textSwitcher.setText(categoryData.get(index).getTitle());
+                        binding.etItem.setText("");
+                    }
                 }
                 break;
             case R.id.ivNext:
-                if(categoryData.size()>=1)
-                {
-                    if (index + 1 < categoryData.size())
-                        index = index + 1;
-                    else
-                        index = 0;
-                    text = categoryData.get(index).getTitle();
-                    binding.textSwitcher.setText(categoryData.get(index).getTitle());
-                    binding.etItem.setText("");
+                if (categoryData.size() > 1 && index < categoryData.size()) {
+                    index = index + 1;
+                    if (index != categoryData.size()) {
+                        text = categoryData.get(index).getTitle();
+                        categoryId = categoryData.get(index).getId();
+                        binding.textSwitcher.setText(categoryData.get(index).getTitle());
+                        binding.etItem.setText("");
+                    } else {
+                        index = categoryData.size() - 1;
+                    }
                 }
                 break;
+            case R.id.btnSend:
+                sendBalloonApi();
+                break;
         }
+
     }
 
     private void categoryApi() {
@@ -231,6 +234,7 @@ public class SelectBalloonFragment extends BaseFragment {
                         categoryData.addAll(result.getData().getData().getCategory());
 
                         text = categoryData.get(index).getTitle().toUpperCase();
+                        categoryId = categoryData.get(index).getId();
                         binding.textSwitcher.setText(categoryData.get(index).getTitle().toUpperCase());
                     }
 
@@ -246,6 +250,7 @@ public class SelectBalloonFragment extends BaseFragment {
             HashMap<String, String> reqData = new HashMap<>();
             reqData.put("userId", sessionManager.getUSER_ID());
             reqData.put("text", text);
+            reqData.put("categoryId",categoryId );
 
             if (Utility.isOnline(mActivity)) {
                 Log.e(TAG, "Api parameters - " + reqData.toString());
@@ -272,7 +277,9 @@ public class SelectBalloonFragment extends BaseFragment {
                 if (result.getData().getStatusCode() == Constants.Success) {
 
                     //getBalloonListApi();
-                    homeActivity.changeFragment(new BalloonsFragment(), true);
+                    homeActivity.changeFragment(new HomeFragment(), true);
+                    sessionManager.setSelectBalloon(false);
+                    binding.etItem.setText("");
 
                 } else {
                     Utility.showToastMessageError(mActivity, result.getData().getMessage());
@@ -280,58 +287,6 @@ public class SelectBalloonFragment extends BaseFragment {
                 break;
         }
     }
-
-  /*  private void getBalloonListApi() {
-        if (sessionManager.getUSER_ID() !=null && !sessionManager.getUSER_ID().isEmpty()) {
-
-            HashMap<String, String> reqData = new HashMap<>();
-            reqData.put("userId", sessionManager.getUSER_ID());
-
-            if (Utility.isOnline(mActivity)) {
-                Log.e(TAG, "Api parameters - " + reqData.toString());
-                viewModel.balloonList(reqData);
-            } else {
-                showNoInternetDialog();
-            }
-        }
-    }
-
-    private void handleBalloonListResult(ApiResponse<BalloonListData> result) {
-        switch (result.getStatus()) {
-            case ERROR:
-                ProgressDialog.hideProgressDialog();
-                Utility.showSnackBarMsgError(mActivity, result.getError().getMessage());
-                Log.e(TAG, "error - " + result.getError().getMessage());
-                break;
-            case LOADING:
-                ProgressDialog.showProgressDialog(mActivity);
-                break;
-            case SUCCESS:
-                ProgressDialog.hideProgressDialog();
-                Log.e(TAG, "Response - " + new Gson().toJson(result));
-                if (result.getData().getStatusCode() == Constants.Success) {
-
-                    if (result.getData().getData().getBubbles() !=null && !result.getData().getData().getBubbles().isEmpty()) {
-                        balloonItemData.clear();
-                        balloonItemData.addAll(result.getData().getData().getBubbles());
-                        for (int i = 0; i < 20; i++) {
-                            //add to the list
-                            balloonItemData.addAll(result.getData().getData().getBubbles());
-                        }
-
-                        Log.e(TAG,"data - "+new Gson().toJson(balloonItemData));
-
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("balloonList",balloonItemData);
-                        homeActivity.changeFragment(new BalloonsFragment(), true,bundle);
-                    }
-
-                } else {
-                    Utility.showToastMessageError(mActivity, result.getData().getMessage());
-                }
-                break;
-        }
-    }*/
 
     private void showNoInternetDialog() {
         final Dialog dialog = new Dialog(mActivity, R.style.Theme_Dialog);
@@ -344,7 +299,6 @@ public class SelectBalloonFragment extends BaseFragment {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         dialog.setContentView(dialogBinding.getRoot());
         dialogBinding.btnOK.setOnClickListener(new View.OnClickListener() {
             @Override

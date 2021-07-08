@@ -41,17 +41,36 @@
                 android:textColor="@color/colorWhite"
                 android:layout_marginTop="@dimen/_20sdp"
                 />
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvLoginFacebook"
+
+            <LinearLayout
+                android:id="@+id/llLoginFacebook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login_with_facebook"
-                android:fontFamily="@font/gotham_book"
-                android:textSize="@dimen/txtSizeLarge"
-                android:foreground="@drawable/ripple_rec"
-                android:textColor="@color/colorWhite"
                 android:layout_marginTop="@dimen/_20sdp"
-                />
+                android:gravity="center"
+                android:orientation="vertical">
+
+
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/login_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="gone"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvLoginFacebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/login_with_facebook"
+                    android:fontFamily="@font/gotham_book"
+                    android:textSize="@dimen/txtSizeLarge"
+                    android:foreground="@drawable/ripple_rec"
+                    android:textColor="@color/colorWhite"
+                    />
+            </LinearLayout>
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvLoginGoogle"
                 android:layout_width="wrap_content"

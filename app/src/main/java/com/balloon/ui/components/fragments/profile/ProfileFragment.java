@@ -2,9 +2,13 @@ package com.balloon.ui.components.fragments.profile;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Environment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,8 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
@@ -24,27 +31,33 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.asksira.bsimagepicker.BSImagePicker;
 import com.balloon.R;
+import com.balloon.databinding.DialogImageViewBinding;
 import com.balloon.databinding.DialogSuccessfullyBinding;
 import com.balloon.databinding.FragmentProfileBinding;
 import com.balloon.network.ApiResponse;
-import com.balloon.pojo.EditProfileData;
 import com.balloon.pojo.ProfileData;
 import com.balloon.pojo.UploadImageData;
 import com.balloon.ui.base.BaseFragment;
 import com.balloon.ui.components.activities.home.HomeActivity;
 import com.balloon.ui.components.adapters.PhotosAdapter;
-import com.balloon.ui.components.fragments.editProfile.EditProfileFragment;
+import com.balloon.ui.components.fragments.home.HomeFragment;
+import com.balloon.ui.components.fragments.settings.SettingsFragment;
 import com.balloon.utils.Constants;
-import com.balloon.utils.ImagePathUtility;
 import com.balloon.utils.ProgressDialog;
 import com.balloon.utils.Utility;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
-import com.skydoves.progressview.OnProgressChangeListener;
+import com.yalantis.ucrop.UCrop;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -52,10 +65,12 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
+import static android.app.Activity.RESULT_OK;
+
 
 public class ProfileFragment extends BaseFragment implements BSImagePicker.OnSingleImageSelectedListener,
         BSImagePicker.OnMultiImageSelectedListener,
-        BSImagePicker.ImageLoaderDelegate{
+        BSImagePicker.ImageLoaderDelegate {
     private static final String TAG = ProfileFragment.class.getName();
     private FragmentProfileBinding binding;
     private ProfileViewModel viewModel;
@@ -66,6 +81,13 @@ public class ProfileFragment extends BaseFragment implements BSImagePicker.OnSin
 
     private String selectedImagePath = "";
     private File mFileTemp = new File("");
+
+    private static final int REQ_CODE_GALLERY_PICKER3 = 30;
+    public static final String TEMP_PHOTO_FILE_NAME = "GoTo.png";
+
+    // Animation
+    Animation animMoveToTop;
+
 
     @Override
     protected ViewDataBinding setBinding(LayoutInflater inflater, ViewGroup container) {
@@ -84,11 +106,54 @@ public class ProfileFragment extends BaseFragment implements BSImagePicker.OnSin
     protected void initializeObject() {
         photoData = new ArrayList<>();
         getProfileApi();
+
+        // load the animation
+        animMoveToTop = AnimationUtils.loadAnimation(mActivity, R.anim.move);
+        //animMoveToTop.setStartOffset(500);
     }
 
     private void setProfileData(ProfileData.Data.Userinfo userinfo) {
-        Utility.loadImage(binding.ivProfile,userinfo.getImage());
+        Utility.loadPicture(binding.ivProfile, userinfo.getImage());
         binding.tvFullName.setText(userinfo.getName());
+
+        if(userinfo.getRating() !=null && !userinfo.getRating().equals("")) {
+
+            if (Double.parseDouble(userinfo.getRating()) > 75 && Double.parseDouble(userinfo.getRating()) <= 100)
+            {
+                setRelativeBalloonVisibility(View.GONE,View.GONE,View.GONE,View.VISIBLE);
+                binding.rlBalloon4.startAnimation(animMoveToTop);
+                binding.tvAirPercentage4.setText(userinfo.getRating().indexOf(".") < 0 ? userinfo.getRating()+"%" : userinfo.getRating()
+                        .replaceAll("0*$", "").replaceAll("\\.$", "") + "%");
+            }else if (Double.parseDouble(userinfo.getRating()) > 50 && Double.parseDouble(userinfo.getRating())<=75)
+            {
+                setRelativeBalloonVisibility(View.GONE,View.GONE,View.VISIBLE,View.GONE);
+                binding.rlBalloon3.startAnimation(animMoveToTop);
+                binding.tvAirPercentage3.setText(userinfo.getRating().indexOf(".") < 0 ? userinfo.getRating()+"%" : userinfo.getRating()
+                        .replaceAll("0*$", "").replaceAll("\\.$", "") + "%");
+            }else if (Double.parseDouble(userinfo.getRating()) > 25 && Double.parseDouble(userinfo.getRating())<=50)
+            {
+                setRelativeBalloonVisibility(View.GONE,View.VISIBLE,View.GONE,View.GONE);
+                binding.rlBalloon2.startAnimation(animMoveToTop);
+                binding.tvAirPercentage2.setText(userinfo.getRating().indexOf(".") < 0 ? userinfo.getRating()+"%" : userinfo.getRating()
+                        .replaceAll("0*$", "").replaceAll("\\.$", "") + "%");
+            }else{
+                setRelativeBalloonVisibility(View.VISIBLE,View.GONE,View.GONE,View.GONE);
+                binding.rlBalloon1.startAnimation(animMoveToTop);
+                binding.tvAirPercentage1.setText(userinfo.getRating().indexOf(".") < 0 ? userinfo.getRating()+"%" : userinfo.getRating()
+                        .replaceAll("0*$", "").replaceAll("\\.$", "") + "%");
+            }
+        }else{
+            setRelativeBalloonVisibility(View.VISIBLE,View.GONE,View.GONE,View.GONE);
+            binding.tvAirPercentage1.setText("0%");
+        }
+        if(userinfo.getRating() !=null && !userinfo.getRating().equals("")) {
+            binding.progressViewAir.setProgress(Float.parseFloat(userinfo.getRating()));
+        }
+        else
+        {
+            binding.progressViewAir.setProgress(Float.parseFloat("0"));
+        }
+
         //binding.tvEmail.setText(sessionManager.getFULL_NAME());
         if (userinfo.getBio() != null && !userinfo.getBio().isEmpty()) {
             binding.tvBio.setVisibility(View.VISIBLE);
@@ -100,19 +165,26 @@ public class ProfileFragment extends BaseFragment implements BSImagePicker.OnSin
         }
 
         //if (userinfo.getImages() != null && !userinfo.getImages().isEmpty()) {
-           // binding.rvPhotos.setVisibility(View.VISIBLE);
-           // binding.layoutError1.rlerror.setVisibility(View.GONE);
-            photoData.clear();
-            photoData.addAll(userinfo.getImages());
-            photoData.add(new ProfileData.Data.Userinfo.ImagesItem());
-            if (photoData.size() != 0) {
-                photosAdapter = new PhotosAdapter(mActivity, onClickListener, photoData);
-                binding.rvPhotos.setAdapter(photosAdapter);
-           }
+        // binding.rvPhotos.setVisibility(View.VISIBLE);
+        // binding.layoutError1.rlerror.setVisibility(View.GONE);
+        photoData.clear();
+        photoData.addAll(userinfo.getImages());
+        photoData.add(new ProfileData.Data.Userinfo.ImagesItem());
+        if (photoData.size() != 0) {
+            photosAdapter = new PhotosAdapter(mActivity, onClickListener, photoData);
+            binding.rvPhotos.setAdapter(photosAdapter);
+        }
         /*} else {
             binding.rvPhotos.setVisibility(View.GONE);
             binding.layoutError1.rlerror.setVisibility(View.VISIBLE);
         }*/
+    }
+
+    private void setRelativeBalloonVisibility(int v1, int v2, int v3, int v4) {
+        binding.relativeBalloon1.setVisibility(v1);
+        binding.relativeBalloon2.setVisibility(v2);
+        binding.relativeBalloon3.setVisibility(v3);
+        binding.relativeBalloon4.setVisibility(v4);
     }
 
 
@@ -146,15 +218,15 @@ public class ProfileFragment extends BaseFragment implements BSImagePicker.OnSin
     @Override
     protected void setListeners() {
         binding.ivBack.setOnClickListener(this);
-        binding.btnEditProfile.setOnClickListener(this);
+        binding.btnSettings.setOnClickListener(this);
         binding.btnMyBio.setOnClickListener(this);
         binding.btnPhoto.setOnClickListener(this);
-        binding.progressView.setOnProgressChangeListener(new OnProgressChangeListener() {
+        /*binding.progressViewAir.setOnProgressChangeListener(new OnProgressChangeListener() {
             @Override
             public void onChange(float v) {
-                binding.progressView.setLabelText("air"+v);
+                binding.progressViewAir.setLabelText("air"+v);
             }
-        });
+        });*/
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -164,8 +236,8 @@ public class ProfileFragment extends BaseFragment implements BSImagePicker.OnSin
             case R.id.ivBack:
                 homeActivity.onBackPressed();
                 break;
-            case R.id.btnEditProfile:
-                homeActivity.changeFragment(new EditProfileFragment(), true);
+            case R.id.btnSettings:
+                homeActivity.changeFragment(new SettingsFragment(), true);
                 break;
             case R.id.btnMyBio:
                 setBackground(binding.btnMyBio, binding.btnPhoto);
@@ -180,18 +252,17 @@ public class ProfileFragment extends BaseFragment implements BSImagePicker.OnSin
             case R.id.rowPhotoItem:
                 int position = (int) view.getTag();
                 photosAdapter.selectedPos = position;
-                if(position == photoData.size()-1)
-                {
+                if (position == photoData.size() - 1) {
+                    createAppDir();
                     BSImagePicker pickerDialog = new BSImagePicker.Builder("com.balloon.fileProvider")
-                                    .build();
+                            .build();
                     pickerDialog.show(getChildFragmentManager(), "picker");
-                }else
-                {
+                } else {
+                    showImageViewDialog(Constants.BASE_IMG_URL + photoData.get(position).getImage());
                 }
                 break;
         }
     }
-
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void setBackground(AppCompatButton txt1, AppCompatButton txt2) {
@@ -203,18 +274,18 @@ public class ProfileFragment extends BaseFragment implements BSImagePicker.OnSin
 
 
     private void getProfileApi() {
-        if (sessionManager.getUSER_ID() !=null && !sessionManager.getUSER_ID().isEmpty()) {
+        if (sessionManager.getUSER_ID() != null && !sessionManager.getUSER_ID().isEmpty()) {
 
-                HashMap<String, String> reqData = new HashMap<>();
-                reqData.put("userId", sessionManager.getUSER_ID());
+            HashMap<String, String> reqData = new HashMap<>();
+            reqData.put("userId", sessionManager.getUSER_ID());
 
-                if (Utility.isOnline(mActivity)) {
-                    Log.e(TAG, "Api parameters - " + reqData.toString());
-                    viewModel.getProfile(reqData);
-                } else {
-                    showNoInternetDialog();
-                }
+            if (Utility.isOnline(mActivity)) {
+                Log.e(TAG, "Api parameters - " + reqData.toString());
+                viewModel.getProfile(reqData);
+            } else {
+                showNoInternetDialog();
             }
+        }
     }
 
     private void handleResult(ApiResponse<ProfileData> result) {
@@ -232,7 +303,7 @@ public class ProfileFragment extends BaseFragment implements BSImagePicker.OnSin
                 Log.e(TAG, "Response - " + new Gson().toJson(result));
                 if (result.getData().getStatusCode() == Constants.Success) {
 
-                    if (result.getData().getData().getUserinfo() !=null) {
+                    if (result.getData().getData().getUserinfo() != null) {
                         sessionManager.setFULL_NAME(result.getData().getData().getUserinfo().getName());
                         sessionManager.setPROFILE_IMAGE(result.getData().getData().getUserinfo().getImage());
                         sessionManager.setPHONE(result.getData().getData().getUserinfo().getPhone());
@@ -258,7 +329,6 @@ public class ProfileFragment extends BaseFragment implements BSImagePicker.OnSin
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         dialog.setContentView(dialogBinding.getRoot());
         dialogBinding.btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -271,7 +341,7 @@ public class ProfileFragment extends BaseFragment implements BSImagePicker.OnSin
     }
 
     private void uploadImageAPI() {
-        if (sessionManager.getUSER_ID() !=null && !sessionManager.getUSER_ID().isEmpty()) {
+        if (sessionManager.getUSER_ID() != null && !sessionManager.getUSER_ID().isEmpty()) {
 
             HashMap<String, String> reqData = new HashMap<>();
 
@@ -293,7 +363,7 @@ public class ProfileFragment extends BaseFragment implements BSImagePicker.OnSin
             if (Utility.isOnline(mActivity)) {
                 Log.e(TAG, "Api parameters - " + reqData.toString());
                 Log.e(TAG, "image - " + req_image);
-                viewModel.uploadImage(req_userId,req_image);
+                viewModel.uploadImage(req_userId, req_image);
             } else {
                 showNoInternetDialog();
             }
@@ -312,12 +382,13 @@ public class ProfileFragment extends BaseFragment implements BSImagePicker.OnSin
                 break;
             case SUCCESS:
                 ProgressDialog.hideProgressDialog();
+
                 if (result.getData().getStatusCode() == Constants.Success) {
                     Log.e(TAG, "Response - " + new Gson().toJson(result));
 
                     getProfileApi();
 
-                   // showSuccessfullyDialog();
+                    // showSuccessfullyDialog();
 
                 } else {
                     Utility.showToastMessageError(mActivity, result.getData().getMessage());
@@ -338,7 +409,6 @@ public class ProfileFragment extends BaseFragment implements BSImagePicker.OnSin
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         dialog.setContentView(dialogBinding.getRoot());
         dialogBinding.btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -363,9 +433,86 @@ public class ProfileFragment extends BaseFragment implements BSImagePicker.OnSin
 
     @Override
     public void onSingleImageSelected(Uri uri, String tag) {
-        selectedImagePath =  ImagePathUtility.getImagePath(mActivity,uri);
-        mFileTemp = new File(selectedImagePath);
-        uploadImageAPI();
+       /* selectedImagePath = Utility.getRealPathFromURI(mActivity, uri);
+        mFileTemp = new File(selectedImagePath);*/
+
+        selectedImagePath = Utility.getRealPathFromURI(mActivity, uri);
+        //selectedImagePath = ImagePathUtility.getImagePath(mActivity, uri);
+        //mFileTemp = new File(selectedImagePath);
+        InputStream inputStream = null;
+        try {
+            inputStream = mActivity.getContentResolver().openInputStream(uri);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(mFileTemp);
+
+            Utility.copyStream(inputStream, fileOutputStream);
+
+            fileOutputStream.close();
+            inputStream.close();
+            UCrop.of(Uri.fromFile(mFileTemp), Uri.fromFile(mFileTemp))
+                    .withAspectRatio(0, 0)
+                    .start(mActivity, this, REQ_CODE_GALLERY_PICKER3);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //uploadImageAPI();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        Log.e(TAG, "result - " + UCrop.getOutput(data));
+
+        if (requestCode == REQ_CODE_GALLERY_PICKER3) {
+            final Uri resultUri = UCrop.getOutput(data);
+            selectedImagePath = resultUri.getPath();
+            Bitmap bitmap = Utility.decodeUriToBitmap(mActivity, resultUri);
+            ByteArrayOutputStream bOut = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bOut);
+            selectedImagePath = Base64.encodeToString(bOut.toByteArray(), Base64.DEFAULT);
+
+            //binding.ivProfile.setImageURI(resultUri);
+            uploadImageAPI();
+        }
+    }
+
+    private void createAppDir() {
+        String root = Environment.getExternalStorageDirectory().toString();
+        new File(root + "/" + getString(R.string.app_name) + "/temp").mkdirs();
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            mFileTemp = new File(root + "/" + getString(R.string.app_name) + "/temp/", new Date().getTime() + TEMP_PHOTO_FILE_NAME);
+        } else {
+            mFileTemp = new File(mActivity.getFilesDir(), new Date().getTime() + TEMP_PHOTO_FILE_NAME);
+        }
+    }
+
+    private void showImageViewDialog(String img_url) {
+        final Dialog dialog = new Dialog(mActivity, R.style.Theme_Dialog);
+        DialogImageViewBinding dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(mActivity), R.layout.dialog_image_view, null, false);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setGravity(Gravity.CENTER);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(dialogBinding.getRoot());
+        dialogBinding.ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        Utility.loadImage(dialogBinding.mBigImage, img_url);
+        dialog.show();
     }
 
     @Override

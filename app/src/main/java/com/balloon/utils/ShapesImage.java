@@ -19,19 +19,21 @@ import androidx.core.view.ViewCompat;
 import com.balloon.R;
 
 
+/**
+ * An {@link ImageView} that draws its contents inside a mask.
+ */
+
 public class ShapesImage extends androidx.appcompat.widget.AppCompatImageView {
     private Paint mBlackPaint;
     private Paint mMaskedPaint;
     private Rect mBounds;
     private RectF mBoundsF;
     private Drawable mMaskDrawable;
-
     private boolean mCacheValid = false;
     private Bitmap mCacheBitmap;
     private int mCachedWidth;
     private int mCachedHeight;
     private int mImageShape;
-
     public static final int CUSTOM = 0;
     public static final int GUITAR_PICK = 34;
 

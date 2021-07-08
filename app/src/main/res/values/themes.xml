@@ -95,5 +95,10 @@
 
     <dimen name="bottom_navigation_icon_size" tools:override="true">32dp</dimen>
 
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/color_B7B7B7</item>
+        <item name="colorControlActivated">@color/color_1786B3</item>
+    </style>
+
 
 </resources>
